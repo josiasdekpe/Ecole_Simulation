@@ -6,6 +6,8 @@ import java.util.List;
 
 public class Enseignant {
 
+    private static int count = 0; // Compteur pour générer des identifiants uniques
+
     private int id;
     private String nom;
     private String prenom;
@@ -13,16 +15,13 @@ public class Enseignant {
     private List<Creneau> creneaux = new ArrayList<>();
 
     public Enseignant(String nom, String prenom) {
+        this.id = ++count; // Incrémenter le compteur et affecter l'ID de l'enseignant
         this.nom = nom;
         this.prenom = prenom;
     }
 
     public int getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getNom() {
@@ -85,4 +84,9 @@ public class Enseignant {
         }
         return disponibilites;
     }
+
+	public void setId(int i) {
+		// TODO Auto-generated method stub
+		this.id = i;
+	}
 }

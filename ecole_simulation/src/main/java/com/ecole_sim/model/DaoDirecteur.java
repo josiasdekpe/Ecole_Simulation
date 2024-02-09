@@ -1,8 +1,6 @@
 package com.ecole_sim.model;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class DaoDirecteur {
@@ -11,6 +9,10 @@ public class DaoDirecteur {
 
     public DaoDirecteur() {
         this.directeursMap = new HashMap<>(); // Initialisation de la Map
+        // Ajout d'un directeur par défaut avec un ID 1
+        Directeur defaultDirecteur = new Directeur("John", "Doe");
+        defaultDirecteur.setId(1);
+        directeursMap.put(defaultDirecteur.getId(), defaultDirecteur);
     }
 
     public void insertDirecteur(Directeur directeur) {
@@ -27,9 +29,5 @@ public class DaoDirecteur {
 
     public Directeur getDirecteurById(int id) {
         return directeursMap.get(id); // Récupération du directeur par son ID depuis la Map
-    }
-
-    public List<Directeur> getDirecteurs() {
-        return new ArrayList<>(directeursMap.values()); // Récupération de tous les directeurs depuis la Map
     }
 }

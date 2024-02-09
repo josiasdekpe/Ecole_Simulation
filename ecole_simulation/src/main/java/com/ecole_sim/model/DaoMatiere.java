@@ -11,6 +11,10 @@ public class DaoMatiere {
 
     public DaoMatiere() {
         this.matieresMap = new HashMap<>(); // Initialisation de la Map
+        // Ajout d'une matière par défaut avec un ID 1 lors de l'initialisation de la classe
+        Matiere defaultMatiere = new Matiere("Mathématiques", null);
+        defaultMatiere.setId(1);
+        matieresMap.put(defaultMatiere.getId(), defaultMatiere);
     }
 
     public void insertMatiere(Matiere matiere) {
@@ -32,5 +36,4 @@ public class DaoMatiere {
     public List<Matiere> getMatieres() {
         return new ArrayList<>(matieresMap.values()); // Récupération de toutes les matières depuis la Map
     }
-
 }

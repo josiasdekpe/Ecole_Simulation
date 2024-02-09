@@ -1,9 +1,9 @@
 package com.ecole_sim.model;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.ArrayList;
 
 public class DaoEnseignant {
 
@@ -11,6 +11,10 @@ public class DaoEnseignant {
 
     public DaoEnseignant() {
         this.enseignantsMap = new HashMap<>(); // Initialisation de la Map
+        // Ajout d'un enseignant par défaut avec un ID 1 lors de l'initialisation de la classe
+        Enseignant defaultEnseignant = new Enseignant("Jane", "Doe");
+        defaultEnseignant.setId(1);
+        enseignantsMap.put(defaultEnseignant.getId(), defaultEnseignant);
     }
 
     public void insertEnseignant(Enseignant enseignant) {

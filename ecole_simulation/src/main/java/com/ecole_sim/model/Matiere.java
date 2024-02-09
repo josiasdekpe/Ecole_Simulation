@@ -5,22 +5,21 @@ import java.util.List;
 
 public class Matiere {
 
+    private static int count = 0; // Compteur pour générer des identifiants uniques
+
     private int id;
     private String nom;
     private Directeur directeur;
     private List<Enseignant> enseignants = new ArrayList<>(); // Liste des enseignants de la matière
 
     public Matiere(String nom, Directeur directeur) {
+        this.id = ++count; // Incrémenter le compteur et affecter l'ID de la matière
         this.nom = nom;
         this.directeur = directeur;
     }
 
     public int getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getNom() {
@@ -58,4 +57,9 @@ public class Matiere {
     public String toString() {
         return "Matiere [id=" + id + ", nom=" + nom + ", directeur=" + directeur + "]";
     }
+
+	public void setId(int i) {
+		// TODO Auto-generated method stub
+		this.id = i;
+	}
 }
