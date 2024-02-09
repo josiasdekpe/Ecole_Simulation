@@ -13,7 +13,9 @@ public class Enseignant {
     private String prenom;
     private List<Matiere> matieres = new ArrayList<>();
     private List<Creneau> creneaux = new ArrayList<>();
+    private List<Date> disponibilites = new ArrayList<>();
 
+    
     public Enseignant(String nom, String prenom) {
         this.id = ++count; // Incrémenter le compteur et affecter l'ID de l'enseignant
         this.nom = nom;
@@ -77,16 +79,30 @@ public class Enseignant {
         return creneaux;
     }
 
-    public List<Date> getDisponibilites() {
-        List<Date> disponibilites = new ArrayList<>();
-        for (Creneau creneau : creneaux) {
-            disponibilites.add(creneau.getDate()); 
-        }
-        return disponibilites;
-    }
-
 	public void setId(int i) {
 		// TODO Auto-generated method stub
 		this.id = i;
 	}
+	
+    public void setDisponibilite(Date date) {
+        disponibilites.add(date);
+    }
+
+    public List<Date> getDisponibilites() {
+        return disponibilites;
+    }
+
+    public void updateCreneau(Creneau creneau) {
+        for (Creneau c : creneaux) {
+            if (c.getId() == creneau.getId()) {
+                c.setDate(creneau.getDate());
+                c.setPlageHoraire(creneau.getPlageHoraire());
+                // Mettez à jour d'autres champs du créneau si nécessaire
+                return;
+            }
+        }
+        // Si le créneau n'existe pas, ajoutez-le
+        creneaux.add(creneau);
+    }	
+	
 }

@@ -12,4 +12,6 @@ public interface EnseignantService {
     void setDisponibilite(int enseignantId, Date date);
     
     List<Date> getDisponibilites(int enseignantId);
+    
+    void updateCreneau(Creneau creneau);
 }

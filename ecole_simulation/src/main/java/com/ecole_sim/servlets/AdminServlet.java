@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
 import com.ecole_sim.model.Directeur;
 import com.ecole_sim.model.Matiere;
 import com.ecole_sim.model.Creneau;
@@ -39,6 +40,8 @@ public class AdminServlet extends HttpServlet {
             addMatiere(request, response);
         } else if ("addCreneau".equals(action)) {
             addCreneau(request, response);
+        } else if ("updateAdminPassword".equals(action)) {
+            updateAdminPassword(request, response);
         }
     }
 
@@ -80,6 +83,15 @@ public class AdminServlet extends HttpServlet {
         
         // Ajouter le créneau
         adminService.addCreneau(creneau);
+        
+        // Rediriger vers une page de confirmation par exemple
+    }
+
+    private void updateAdminPassword(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String newPassword = request.getParameter("newPassword");
+        String username = request.getParameter("username");
+        // Mettre à jour le mot de passe de l'administrateur par défaut
+        adminService.changeAdminPassword(username, newPassword);
         
         // Rediriger vers une page de confirmation par exemple
     }
