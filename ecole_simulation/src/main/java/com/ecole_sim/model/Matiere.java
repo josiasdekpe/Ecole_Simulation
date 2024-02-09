@@ -1,59 +1,61 @@
 package com.ecole_sim.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Matiere {
 
-  private int id;
-  private String nom;
-  private Directeur directeur;
-  
-  public Matiere(String nom, Directeur directeur) {
-    this.nom = nom;
-    this.directeur = directeur;
-  }
+    private int id;
+    private String nom;
+    private Directeur directeur;
+    private List<Enseignant> enseignants = new ArrayList<>(); // Liste des enseignants de la matière
 
-  public int getId() {
-    return id;
-  }
+    public Matiere(String nom, Directeur directeur) {
+        this.nom = nom;
+        this.directeur = directeur;
+    }
 
-  public void setId(int id) {
-    this.id = id;
-  }
+    public int getId() {
+        return id;
+    }
 
-  public String getNom() {
-    return nom;
-  }
+    public void setId(int id) {
+        this.id = id;
+    }
 
-  public void setNom(String nom) {
-    this.nom = nom;
-  }
+    public String getNom() {
+        return nom;
+    }
 
-  public Directeur getDirecteur() {
-    return directeur;
-  }
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
 
-  public void setDirecteur(Directeur directeur) {
-    this.directeur = directeur;
-  }
-//Obtenir les enseignants de la matière
-	public List<Enseignant> getEnseignants() {
-	 return this.directeur.getEnseignantsPourMatiere(this); 
-	}
-	
-	//Vérifier si un enseignant enseigne cette matière
-	public boolean isEnseignedBy(Enseignant enseignant) {
-	 for (Enseignant e : getEnseignants()) {
-	   if (e.equals(enseignant)) {
-	     return true;
-	   }
-	 }
-	 return false;
-	}
-	  
-  @Override
-  public String toString() {
-    return "Matiere [id=" + id + ", nom=" + nom + ", directeur=" + directeur + "]";
-  }
+    public Directeur getDirecteur() {
+        return directeur;
+    }
 
+    public void setDirecteur(Directeur directeur) {
+        this.directeur = directeur;
+    }
+
+    // Obtenir les enseignants de la matière
+    public List<Enseignant> getEnseignants() {
+        return enseignants;
+    }
+
+    // Ajouter un enseignant à la matière
+    public void addEnseignant(Enseignant enseignant) {
+        enseignants.add(enseignant);
+    }
+
+    // Vérifier si un enseignant enseigne cette matière
+    public boolean isEnseignedBy(Enseignant enseignant) {
+        return enseignants.contains(enseignant);
+    }
+
+    @Override
+    public String toString() {
+        return "Matiere [id=" + id + ", nom=" + nom + ", directeur=" + directeur + "]";
+    }
 }

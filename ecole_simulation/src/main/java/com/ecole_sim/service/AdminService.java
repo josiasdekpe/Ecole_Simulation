@@ -6,16 +6,13 @@ import com.ecole_sim.model.Matiere;
 
 public interface AdminService {
 
-	  public void addDirecteur(Directeur directeur);
+    void addDirecteur(Directeur directeur);
 
-	  public void removeDirecteur(Directeur directeur);
-	  
-	  public Directeur getDirecteurById(int id);
-	  
-	  public void addMatiere(Matiere matiere);
-	  
-	  public void addCreneau(Creneau creneau);
-	  
-	}
-
-	
+    void removeDirecteur(Directeur directeur);
+    
+    Directeur getDirecteurById(int id);
+    
+    void addMatiere(Matiere matiere);
+    
+    void addCreneau(Creneau creneau);
+}

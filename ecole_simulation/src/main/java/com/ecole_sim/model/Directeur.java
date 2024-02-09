@@ -5,87 +5,87 @@ import java.util.List;
 
 public class Directeur {
 
-  private int id;
-  private String nom;
-  private String prenom;
+    private int id;
+    private String nom;
+    private String prenom;
+    private List<Matiere> matieres = new ArrayList<>();
+    private List<Enseignant> enseignants= new ArrayList<>();
+
+    public Directeur(String nom, String prenom) {
+        this.nom = nom;
+        this.prenom = prenom;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getNom() {
+        return nom;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
+    public String getPrenom() {
+        return prenom;
+    }
+
+    public void setPrenom(String prenom) {
+        this.prenom = prenom;
+    }
+
+    public List<Matiere> getMatieres() {
+        return matieres;
+    }
   
-  private List<Matiere> matieres = new ArrayList<>();
-  private List<Enseignant> enseignants= new ArrayList<>();
-  
-  public Directeur(String nom, String prenom) {
-    this.nom = nom;
-    this.prenom = prenom;
-  }
+    public void addMatiere(Matiere matiere) {
+        matieres.add(matiere);
+    }
 
-  public int getId() {
-    return id;
-  }
+    public void addEnseignant(Enseignant enseignant) {
+        enseignants.add(enseignant);
+    }
 
-  public void setId(int id) {
-    this.id = id;
-  }
+    public void removeEnseignant(Enseignant enseignant) {
+        enseignants.remove(enseignant);
+    }
 
-  public String getNom() {
-    return nom;
-  }
+    public Enseignant getEnseignantById(int id) {
+        for (Enseignant e : enseignants) {
+            if (e.getId() == id) {
+                return e;
+            }
+        }
+        return null;
+    }
 
-  public void setNom(String nom) {
-    this.nom = nom;
-  }
+    public boolean enseigneMatiere(Matiere matiere) {
+        for (Enseignant e : enseignants) {
+            if (e.enseigneMatiere(matiere)) {
+                return true;
+            }
+        }
+        return false;  
+    }
 
-  public String getPrenom() {
-    return prenom;
-  }
+    public List<Enseignant> getEnseignantsPourMatiere(Matiere matiere) {
+        List<Enseignant> ens = new ArrayList<>();
+        for (Enseignant e : enseignants) {
+            if (e.enseigneMatiere(matiere)) {
+                ens.add(e);
+            }
+        }
+        return ens;
+    }
 
-  public void setPrenom(String prenom) {
-    this.prenom = prenom;
-  }
-
-  public List<Matiere> getMatieres() {
-    return matieres;
-  }
-  
-  public void addMatiere(Matiere matiere) {
-    matieres.add(matiere);
-  }
-
-  @Override
-  public String toString() {
-    return "Directeur [id=" + id + ", nom=" + nom + ", prenom=" + prenom + ", matieres=" + matieres + "]";
-  }
-  public void addEnseignant(Enseignant enseignant) {
-	  enseignants.add(enseignant);
-	}
-
-	public void removeEnseignant(Enseignant enseignant) {
-	  enseignants.remove(enseignant);
-	}
-
-	public Enseignant getEnseignantById(int id) {
-	  for (Enseignant e : enseignants) {
-	    if (e.getId() == id) {
-	      return e;
-	    }
-	  }
-	  return null;
-	}
-
-	public boolean enseigneMatiere(Matiere matiere) {
-	  for (Enseignant e : enseignants) {
-	    if (e.enseigneMatiere(matiere)) {
-	      return true;
-	    }
-	  }
-	  return false;  
-	}
-
-	public List<Enseignant> getEnseignantsPourMatiere(Matiere matiere) {
-	  List<Enseignant> ens = new ArrayList<>();
-	  for (Enseignant e : enseignants) {
-	    if (e.enseigneMatiere(matiere)) {
-	      ens.add(e);
-	    }
-	  }
-	  return ens;
-	}
+    @Override
+    public String toString() {
+        return "Directeur [id=" + id + ", nom=" + nom + ", prenom=" + prenom + ", matieres=" + matieres + "]";
+    }
 }
