@@ -9,12 +9,14 @@ public class DaoAdmin {
     private Map<Integer, Directeur> directeursMap; // Utilisation d'une Map pour stocker les directeurs par leur ID
     private Map<Integer, Matiere> matieresMap; // Utilisation d'une Map pour stocker les matières par leur ID
     private Map<Integer, Creneau> creneauxMap; // Utilisation d'une Map pour stocker les créneaux par leur ID
-
+    private Map<Integer, Enseignant> enseignantsMap; // Utilisation d'une Map pour stocker les enseignants par leur ID
+    
     public DaoAdmin() {
         this.adminsMap = new HashMap<>(); // Initialisation de la Map pour les administrateurs
         this.directeursMap = new HashMap<>(); // Initialisation de la Map pour les directeurs
         this.matieresMap = new HashMap<>(); // Initialisation de la Map pour les matières
         this.creneauxMap = new HashMap<>(); // Initialisation de la Map pour les créneaux
+        this.enseignantsMap = new HashMap<>(); // Initialisation de la Map pour les enseignants
         
         // Ajout de l'administrateur par défaut avec identifiant "admin" et mot de passe "admin"
         Admin defaultAdmin = new Admin("admin", "admin");
@@ -57,6 +59,10 @@ public class DaoAdmin {
     public void insertCreneau(Creneau creneau) {
         creneauxMap.put(creneau.getId(), creneau); // Ajout du créneau à la Map
     }
+
+	public void insertEnseignant(Enseignant enseignant) {
+	    enseignantsMap.put(enseignant.getId(), enseignant); // Ajout d'un enseignant à la Map
+	}
 
 
     // Méthodes CRUD pour les directeurs, matières, créneaux, etc.

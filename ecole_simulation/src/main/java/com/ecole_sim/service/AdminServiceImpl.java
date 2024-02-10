@@ -3,6 +3,7 @@ package com.ecole_sim.service;
 import com.ecole_sim.model.Creneau;
 import com.ecole_sim.model.DaoAdmin;
 import com.ecole_sim.model.Directeur;
+import com.ecole_sim.model.Enseignant;
 import com.ecole_sim.model.Matiere;
 
 public class AdminServiceImpl implements AdminService {
@@ -37,5 +38,10 @@ public class AdminServiceImpl implements AdminService {
         // Méthode pour changer le mot de passe de l'administrateur par défaut
     	daoAdmin.updateAdminPassword(username, newPassword);
     }
+
+	@Override
+	public void addEnseignant(Enseignant enseignant) {
+		daoAdmin.insertEnseignant(enseignant);
+	}
 
 }
