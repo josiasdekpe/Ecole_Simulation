@@ -39,4 +39,24 @@
     <servlet-name>CreneauServlet</servlet-name>
     <url-pattern>/CreneauServlet</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>DirecteurServlet</display-name>
+    <servlet-name>DirecteurServlet</servlet-name>
+    <servlet-class>com.ecole_sim.servlets.DirecteurServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DirecteurServlet</servlet-name>
+    <url-pattern>/DirecteurServlet</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>EnseignantServlet</display-name>
+    <servlet-name>EnseignantServlet</servlet-name>
+    <servlet-class>com.ecole_sim.servlets.EnseignantServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>EnseignantServlet</servlet-name>
+    <url-pattern>/EnseignantServlet</url-pattern>
+  </servlet-mapping>
 </web-app>

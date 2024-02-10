@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.List;
 
 import com.ecole_sim.model.Creneau;
+import com.ecole_sim.model.Enseignant;
+import com.ecole_sim.model.Matiere;
 
 public interface EnseignantService {
 
@@ -14,4 +16,6 @@ public interface EnseignantService {
     List<Date> getDisponibilites(int enseignantId);
     
     void updateCreneau(Creneau creneau);
+
+	void enseigneMatiere(Enseignant enseignant, Matiere matiere);    
 }

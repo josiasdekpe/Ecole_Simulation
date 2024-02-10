@@ -33,6 +33,10 @@ public class DirecteurServiceImpl implements DirecteurService {
         matiere.addEnseignant(enseignant);
     }
 
+    public void addCreneau(Creneau creneau) {
+        daoCreneau.insertCreneau(creneau);
+    }    
+    
     public void updateCreneau(Creneau creneau) {
         List<Matiere> matieres = daoMatiere.getMatieres();
         Matiere matiereDuDirecteur = getMatiereDuDirecteur(creneau, matieres);

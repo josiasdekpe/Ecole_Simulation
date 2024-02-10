@@ -5,11 +5,13 @@ import java.util.List;
 
 import com.ecole_sim.model.Creneau;
 import com.ecole_sim.model.DaoEnseignant;
+import com.ecole_sim.model.Enseignant;
+import com.ecole_sim.model.Matiere;
 
 public class EnseignantServiceImpl implements EnseignantService {
 
     private DaoEnseignant daoEnseignant;
-
+    
     public EnseignantServiceImpl(DaoEnseignant daoEnseignant) {
         this.daoEnseignant = daoEnseignant;
     }
@@ -33,4 +35,10 @@ public class EnseignantServiceImpl implements EnseignantService {
     public void updateCreneau(Creneau creneau) {
         daoEnseignant.updateCreneau(creneau);
     }
+
+	@Override
+    public void enseigneMatiere(Enseignant enseignant, Matiere matiere) {
+        matiere.addEnseignant(enseignant);
+    }
+	
 }

@@ -12,5 +12,7 @@ public interface DirecteurService {
     
     void assignEnseignantToMatiere(Enseignant enseignant, Matiere matiere);
     
+    void addCreneau(Creneau creneau);
+    
     void updateCreneau(Creneau creneau);
 }

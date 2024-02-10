@@ -11,6 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import com.ecole_sim.model.Directeur;
+import com.ecole_sim.model.Enseignant;
 import com.ecole_sim.model.Matiere;
 import com.ecole_sim.model.Creneau;
 import com.ecole_sim.service.AdminService;
@@ -36,6 +37,8 @@ public class AdminServlet extends HttpServlet {
         
         if ("addDirecteur".equals(action)) {
             addDirecteur(request, response);
+        } else if ("addEnseignant".equals(action)) {
+            addEnseignant(request, response);
         } else if ("addMatiere".equals(action)) {
             addMatiere(request, response);
         } else if ("addCreneau".equals(action)) {
@@ -45,7 +48,17 @@ public class AdminServlet extends HttpServlet {
         }
     }
 
-    private void addDirecteur(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void addEnseignant(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String nom = request.getParameter("nom");
+        String prenom = request.getParameter("prenom");
+        Enseignant enseignant = new Enseignant(nom, prenom);
+        adminService.addEnseignant(enseignant);
+        
+        // Rediriger vers une page de confirmation par exemple
+        response.sendRedirect("confirmation.jsp");
+	}
+
+	private void addDirecteur(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String nom = request.getParameter("nom");
         String prenom = request.getParameter("prenom");
         
