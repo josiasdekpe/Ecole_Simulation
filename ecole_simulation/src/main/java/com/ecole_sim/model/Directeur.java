@@ -64,19 +64,10 @@ public class Directeur {
         return null;
     }
 
-    public boolean enseigneMatiere(Matiere matiere) {
-        for (Enseignant e : enseignants) {
-            if (e.enseigneMatiere(matiere)) {
-                return true;
-            }
-        }
-        return false;  
-    }
-
     public List<Enseignant> getEnseignantsPourMatiere(Matiere matiere) {
         List<Enseignant> ens = new ArrayList<>();
         for (Enseignant e : enseignants) {
-            if (e.enseigneMatiere(matiere)) {
+            if (e.peutenseignerMatiere(matiere)) {
                 ens.add(e);
             }
         }

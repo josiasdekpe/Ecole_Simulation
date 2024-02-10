@@ -1,7 +1,6 @@
 package com.ecole_sim.model;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class Enseignant {
@@ -13,7 +12,6 @@ public class Enseignant {
     private String prenom;
     private List<Matiere> matieres = new ArrayList<>();
     private List<Creneau> creneaux = new ArrayList<>();
-    private List<Date> disponibilites = new ArrayList<>();
 
     
     public Enseignant(String nom, String prenom) {
@@ -64,13 +62,13 @@ public class Enseignant {
         return null;
     }
 
-    public boolean enseigneMatiere(Matiere matiere) {
+    public boolean peutenseignerMatiere(Matiere matiere) {
         return matieres.contains(matiere);
     }
 
     public void addCreneau(Creneau creneau) {
-        if (!enseigneMatiere(creneau.getMatiere())) {
-            throw new IllegalArgumentException("L'enseignant n'enseigne pas cette matière");
+        if (!peutenseignerMatiere(creneau.getMatiere())) {
+            throw new IllegalArgumentException("L'enseignant ne peut pas enseigner cette matière");
         }
         creneaux.add(creneau);
     }
@@ -83,14 +81,6 @@ public class Enseignant {
 		// TODO Auto-generated method stub
 		this.id = i;
 	}
-	
-    public void setDisponibilite(Date date) {
-        disponibilites.add(date);
-    }
-
-    public List<Date> getDisponibilites() {
-        return disponibilites;
-    }
 
     public void updateCreneau(Creneau creneau) {
         for (Creneau c : creneaux) {

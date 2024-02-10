@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class DaoEnseignant {
 
@@ -44,25 +43,6 @@ public class DaoEnseignant {
             return enseignant.getCreneaux(); // Retourne les créneaux de l'enseignant s'il existe
         } else {
             return new ArrayList<>(); // Retourne une liste vide si aucun enseignant correspondant n'est trouvé
-        }
-    }
-    
-    public void setDisponibilite(int enseignantId, Date date) {
-        Enseignant enseignant = enseignantsMap.get(enseignantId);
-        if (enseignant != null) {
-            enseignant.setDisponibilite(date);
-        } else {
-            // Gérer le cas où aucun enseignant correspondant à l'ID n'est trouvé
-        }
-    }
-
-    public List<Date> getDisponibilites(int enseignantId) {
-        Enseignant enseignant = enseignantsMap.get(enseignantId);
-        if (enseignant != null) {
-            return enseignant.getDisponibilites();
-        } else {
-            // Gérer le cas où aucun enseignant correspondant à l'ID n'est trouvé
-            return new ArrayList<>(); // Ou null, selon la logique de votre application
         }
     }
 

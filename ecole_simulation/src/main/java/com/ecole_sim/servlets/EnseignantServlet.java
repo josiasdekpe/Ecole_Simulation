@@ -1,74 +1,97 @@
 package com.ecole_sim.servlets;
 
+import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.Date;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 
-import com.ecole_sim.model.DaoEnseignant;
-import com.ecole_sim.model.DaoMatiere;
-import com.ecole_sim.model.Enseignant;
-import com.ecole_sim.model.Matiere;
+import com.ecole_sim.model.Creneau;
 import com.ecole_sim.service.EnseignantService;
 
 @WebServlet("/enseignant")
 public class EnseignantServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
-    
-    private EnseignantService enseignantService; 
-    
-    public EnseignantServlet() {
-        super();
-    }
-    
+
+    private EnseignantService enseignantService;
+
     public EnseignantServlet(EnseignantService enseignantService) {
         super();
-        this.enseignantService = enseignantService; 
+        this.enseignantService = enseignantService;
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
-        
-        if ("setDisponibilite".equals(action)) {
-            setDisponibilite(request, response);
-        } else if ("enseigneMatiere".equals(action)) {
-            enseigneMatiere(request, response);
-        }
-    }
 
-    private void setDisponibilite(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int enseignantId = Integer.parseInt(request.getParameter("enseignantId"));
-        String dateString = request.getParameter("date");
-        
-        // Convertir la chaîne en objet Date
-        Date date = parseDate(dateString);
-        
-        // Définir la disponibilité pour l'enseignant
-        enseignantService.setDisponibilite(enseignantId, date);
-        
-        // Redirection vers une page de confirmation
-        response.sendRedirect("confirmation.jsp");
+        if ("enseigneMatiere".equals(action)) {
+            enseigneMatiere(request, response);
+        } else if ("updateCreneau".equals(action)) {
+            updateCreneau(request, response);
+        } else if ("getCreneaux".equals(action)) {
+                getCreneaux(request, response);
+        } else if ("peutenseignerMatiere".equals(action)) {
+            peutEnseignerMatiere(request, response);
+        }
     }
 
     private void enseigneMatiere(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int enseignantId = Integer.parseInt(request.getParameter("enseignantId"));
         int matiereId = Integer.parseInt(request.getParameter("matiereId"));
-        DaoEnseignant daoEnseignant = new DaoEnseignant();
-        DaoMatiere daoMatiere = new DaoMatiere();
-        Enseignant enseignant = daoEnseignant.getEnseignantById(enseignantId);
-        Matiere matiere = daoMatiere.getMatiereById(matiereId);
-        // Associer l'enseignant à la matière
-        enseignantService.enseigneMatiere(enseignant, matiere);
-        
+        String dateString = request.getParameter("date");
+        String plageHoraire = request.getParameter("plageHoraire");
+
+        // Convertir la chaîne en objet Date
+        Date date = parseDate(dateString);
+
+        // Appeler la méthode du service pour enseigner la matière
+        enseignantService.enseigneMatiere(enseignantId, matiereId, date, plageHoraire);
+
         // Redirection vers une page de confirmation
         response.sendRedirect("confirmation.jsp");
     }
+
+    private void updateCreneau(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        int creneauId = Integer.parseInt(request.getParameter("creneauId"));
+
+        // Appeler la méthode du service pour mettre à jour le créneau
+        enseignantService.updateCreneau(creneauId);
+
+        // Redirection vers une page de confirmation
+        response.sendRedirect("confirmation.jsp");
+    }
+
+    private void peutEnseignerMatiere(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        int enseignantId = Integer.parseInt(request.getParameter("enseignantId"));
+        int matiereId = Integer.parseInt(request.getParameter("matiereId"));
+
+        // Appeler la méthode du service pour vérifier si l'enseignant peut enseigner la matière
+        enseignantService.peutenseignerMatiere(enseignantId, matiereId);
+
+        // Redirection vers une page de confirmation
+        response.sendRedirect("confirmation.jsp");
+    }
+    
+    
+    private void getCreneaux(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        int enseignantId = Integer.parseInt(request.getParameter("enseignantId"));
+
+        // Appeler la méthode du service pour récupérer les créneaux de l'enseignant
+        List<Creneau> creneaux = enseignantService.getCreneaux(enseignantId);
+
+        // Mettre les créneaux dans les attributs de la requête pour les rendre disponibles dans la JSP
+        request.setAttribute("creneaux", creneaux);
+
+        // Dispatcher vers une JSP qui affiche les créneaux de l'enseignant
+        request.getRequestDispatcher("creneaux.jsp").forward(request, response);
+    }
+
 
     // Méthode pour convertir une chaîne en objet Date
     private Date parseDate(String dateString) {
