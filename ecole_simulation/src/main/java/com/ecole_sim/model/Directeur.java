@@ -92,4 +92,13 @@ public class Directeur {
 		// TODO Auto-generated method stub
 		this.id = Id ;
 	}
+
+	public Matiere getMatiereByName(String nomMatiere) {
+        for (Matiere m : matieres) {
+            if (m.getNom() == nomMatiere) {
+                return m;
+            }
+        }
+        return null;
+	}
 }

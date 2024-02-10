@@ -29,4 +29,14 @@
     <servlet-name>Admin_Servlet</servlet-name>
     <url-pattern>/Admin_Servlet</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>CreneauServlet</display-name>
+    <servlet-name>CreneauServlet</servlet-name>
+    <servlet-class>com.ecole_sim.servlets.CreneauServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CreneauServlet</servlet-name>
+    <url-pattern>/CreneauServlet</url-pattern>
+  </servlet-mapping>
 </web-app>

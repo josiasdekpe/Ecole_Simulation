@@ -53,6 +53,7 @@ public class AdminServlet extends HttpServlet {
         adminService.addDirecteur(directeur);
         
         // Rediriger vers une page de confirmation par exemple
+        response.sendRedirect("confirmation.jsp");
     }
 
     private void addMatiere(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -65,6 +66,7 @@ public class AdminServlet extends HttpServlet {
         adminService.addMatiere(matiere);
         
         // Rediriger vers une page de confirmation par exemple
+        response.sendRedirect("confirmation.jsp");
     }
 
     private void addCreneau(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -85,6 +87,7 @@ public class AdminServlet extends HttpServlet {
         adminService.addCreneau(creneau);
         
         // Rediriger vers une page de confirmation par exemple
+        response.sendRedirect("confirmation.jsp");
     }
 
     private void updateAdminPassword(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -94,6 +97,7 @@ public class AdminServlet extends HttpServlet {
         adminService.changeAdminPassword(username, newPassword);
         
         // Rediriger vers une page de confirmation par exemple
+        response.sendRedirect("confirmation.jsp");
     }
 
     // Méthode pour convertir une chaîne en objet Date
