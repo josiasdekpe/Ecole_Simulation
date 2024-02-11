@@ -59,4 +59,13 @@
     <servlet-name>EnseignantServlet</servlet-name>
     <url-pattern>/EnseignantServlet</url-pattern>
   </servlet-mapping>
+  <filter>
+    <display-name>AuthenticationFilter</display-name>
+    <filter-name>AuthenticationFilter</filter-name>
+    <filter-class>com.ecole_sim.filter.AuthenticationFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>AuthenticationFilter</filter-name>
+    <url-pattern>/AuthenticationFilter</url-pattern>
+  </filter-mapping>
 </web-app>

@@ -7,38 +7,37 @@ import java.util.ArrayList;
 
 public class DaoEnseignant {
 
-    private Map<Integer, Enseignant> enseignantsMap; // Utilisation d'une Map pour stocker les enseignants par leur ID
+    private Map<String, Enseignant> enseignantsMap; // Utilisation d'une Map pour stocker les enseignants par leur ID
 
     public DaoEnseignant() {
         this.enseignantsMap = new HashMap<>(); // Initialisation de la Map
         // Ajout d'un enseignant par défaut avec un ID 1 lors de l'initialisation de la classe
-        Enseignant defaultEnseignant = new Enseignant("Jane", "Doe");
-        defaultEnseignant.setId(1);
-        enseignantsMap.put(defaultEnseignant.getId(), defaultEnseignant);
+        Enseignant defaultEnseignant = new Enseignant("enseignant", "enseignant");
+        enseignantsMap.put(defaultEnseignant.getUsername(), defaultEnseignant);
     }
 
     public void insertEnseignant(Enseignant enseignant) {
-        enseignantsMap.put(enseignant.getId(), enseignant); // Ajout de l'enseignant à la Map
+        enseignantsMap.put(enseignant.getUsername(), enseignant); // Ajout de l'enseignant à la Map
     }
 
     public void updateEnseignant(Enseignant enseignant) {
-        enseignantsMap.put(enseignant.getId(), enseignant); // Mise à jour de l'enseignant dans la Map
+        enseignantsMap.put(enseignant.getUsername(), enseignant); // Mise à jour de l'enseignant dans la Map
     }
 
-    public void deleteEnseignant(int id) {
-        enseignantsMap.remove(id); // Suppression de l'enseignant de la Map par son ID
+    public void deleteEnseignant(String username) {
+        enseignantsMap.remove(username); // Suppression de l'enseignant de la Map par son ID
     }
 
-    public Enseignant getEnseignantById(int id) {
-        return enseignantsMap.get(id); // Récupération de l'enseignant par son ID depuis la Map
+    public Enseignant getEnseignantByUsername(String username) {
+        return enseignantsMap.get(username); // Récupération de l'enseignant par son ID depuis la Map
     }
 
     public List<Enseignant> getEnseignants() {
         return new ArrayList<>(enseignantsMap.values()); // Récupération de tous les enseignants depuis la Map
     }
 
-    public List<Creneau> getCreneaux(int enseignantId) {
-        Enseignant enseignant = enseignantsMap.get(enseignantId);
+    public List<Creneau> getCreneaux(String enseignantUsername) {
+        Enseignant enseignant = enseignantsMap.get(enseignantUsername);
         if (enseignant != null) {
             return enseignant.getCreneaux(); // Retourne les créneaux de l'enseignant s'il existe
         } else {
@@ -49,7 +48,7 @@ public class DaoEnseignant {
     public void updateCreneau(Creneau creneau) {
         // Dans cette méthode, vous pouvez simplement mettre à jour le créneau de l'enseignant
         // Appel direct à la méthode updateCreneau de la classe Enseignant
-        Enseignant enseignant = enseignantsMap.get(creneau.getEnseignant().getId());
+        Enseignant enseignant = enseignantsMap.get(creneau.getEnseignant().getUsername());
         if (enseignant != null) {
             enseignant.updateCreneau(creneau);
         } else {

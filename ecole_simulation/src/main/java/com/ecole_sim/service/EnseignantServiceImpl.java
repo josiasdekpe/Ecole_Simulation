@@ -23,19 +23,19 @@ public class EnseignantServiceImpl implements EnseignantService {
         daoEnseignant.updateCreneau(creneau);
     }
 
-	public void peutenseignerMatiere(int enseignantId, int matiereId) {
+	public void peutenseignerMatiere(String enseignantUsername, int matiereId) {
         DaoEnseignant daoEnseignant = new DaoEnseignant();
         DaoMatiere daoMatiere = new DaoMatiere();
-        Enseignant enseignant = daoEnseignant.getEnseignantById(enseignantId);
+        Enseignant enseignant = daoEnseignant.getEnseignantByUsername(enseignantUsername);
         Matiere matiere = daoMatiere.getMatiereById(matiereId);
         enseignant.addMatiere(matiere);
     }
 	
-    public void enseigneMatiere(int enseignantId, int matiereId, Date date, String plageHoraire) {
+    public void enseigneMatiere(String enseignantUsername, int matiereId, Date date, String plageHoraire) {
         DaoEnseignant daoEnseignant = new DaoEnseignant();
         DaoMatiere daoMatiere = new DaoMatiere();
     	DaoCreneau daoCreneau = new DaoCreneau();
-        Enseignant enseignant = daoEnseignant.getEnseignantById(enseignantId);
+        Enseignant enseignant = daoEnseignant.getEnseignantByUsername(enseignantUsername);
         Matiere matiere = daoMatiere.getMatiereById(matiereId);
 
         

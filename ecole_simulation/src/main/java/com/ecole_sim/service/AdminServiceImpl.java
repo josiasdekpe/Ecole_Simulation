@@ -17,14 +17,6 @@ public class AdminServiceImpl implements AdminService {
     public void addDirecteur(Directeur directeur) {
         daoAdmin.insertDirecteur(directeur);
     }
-
-    public void removeDirecteur(Directeur directeur) {
-        daoAdmin.deleteDirecteur(directeur.getId());
-    }
-    
-    public Directeur getDirecteurById(int id) {
-        return daoAdmin.selectDirecteurById(id);
-    }
     
     public void addMatiere(Matiere matiere) {
         daoAdmin.insertMatiere(matiere);

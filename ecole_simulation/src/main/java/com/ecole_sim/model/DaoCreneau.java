@@ -32,11 +32,11 @@ public class DaoCreneau {
         return creneauxMap.get(id);
     }
 
-    public List<Creneau> getCreneauxByEnseignant(int idEnseignant) {
+    public List<Creneau> getCreneauxByEnseignant(String usernameEnseignant) {
         // Implémentation de la logique pour récupérer les créneaux d'un enseignant par son ID
         List<Creneau> creneauxEnseignant = new ArrayList<>();
         for (Creneau creneau : creneauxMap.values()) {
-            if (creneau.getEnseignant().getId() == idEnseignant) {
+            if (creneau.getEnseignant().getUsername() == usernameEnseignant) {
                 creneauxEnseignant.add(creneau);
             }
         }

@@ -7,7 +7,7 @@ public interface EnseignantService {
     
     void updateCreneau(int creneauId);
 
-	void peutenseignerMatiere(int enseignantId, int matiereId);
+	void peutenseignerMatiere(String enseignantUsername, int matiereId);
 
-	void enseigneMatiere(int enseignantId, int matiereId, Date date, String PlageHoraire);    
+	void enseigneMatiere(String enseignantUsername, int matiereId, Date date, String PlageHoraire);    
 }

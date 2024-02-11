@@ -6,10 +6,10 @@ import java.util.Map;
 public class DaoAdmin {
 
     private Map<String, Admin> adminsMap; // Utilisation d'une Map pour stocker les administrateurs par leur identifiant
-    private Map<Integer, Directeur> directeursMap; // Utilisation d'une Map pour stocker les directeurs par leur ID
+    private Map<String, Directeur> directeursMap; // Utilisation d'une Map pour stocker les directeurs par leur ID
     private Map<Integer, Matiere> matieresMap; // Utilisation d'une Map pour stocker les matières par leur ID
     private Map<Integer, Creneau> creneauxMap; // Utilisation d'une Map pour stocker les créneaux par leur ID
-    private Map<Integer, Enseignant> enseignantsMap; // Utilisation d'une Map pour stocker les enseignants par leur ID
+    private Map<String, Enseignant> enseignantsMap; // Utilisation d'une Map pour stocker les enseignants par leur ID
     
     public DaoAdmin() {
         this.adminsMap = new HashMap<>(); // Initialisation de la Map pour les administrateurs
@@ -21,6 +21,7 @@ public class DaoAdmin {
         // Ajout de l'administrateur par défaut avec identifiant "admin" et mot de passe "admin"
         Admin defaultAdmin = new Admin("admin", "admin");
         adminsMap.put(defaultAdmin.getUsername(), defaultAdmin);
+        
     }
 
     // Méthode pour récupérer l'administrateur par son identifiant
@@ -37,20 +38,16 @@ public class DaoAdmin {
     }
 
     public void insertDirecteur(Directeur directeur) {
-        directeursMap.put(directeur.getId(), directeur); // Ajout du directeur à la Map
-    }
-
-    public Directeur selectDirecteurById(int id) {
-        return directeursMap.get(id); // Récupération du directeur par son ID depuis la Map
+        directeursMap.put(directeur.getUsername(), directeur); // Ajout du directeur à la Map
     }
 
     public void updateDirecteur(Directeur directeur) {
-        directeursMap.put(directeur.getId(), directeur); // Mise à jour du directeur dans la Map
+        directeursMap.put(directeur.getUsername(), directeur); // Mise à jour du directeur dans la Map
     }
 
-    public void deleteDirecteur(int id) {
-        directeursMap.remove(id); // Suppression du directeur de la Map par son ID
-    }
+	public void insertEnseignant(Enseignant enseignant) {
+	    enseignantsMap.put(enseignant.getUsername(), enseignant); // Ajout d'un enseignant à la Map
+	}
 
     public void insertMatiere(Matiere matiere) {
         matieresMap.put(matiere.getId(), matiere); // Ajout de la matière à la Map
@@ -59,11 +56,6 @@ public class DaoAdmin {
     public void insertCreneau(Creneau creneau) {
         creneauxMap.put(creneau.getId(), creneau); // Ajout du créneau à la Map
     }
-
-	public void insertEnseignant(Enseignant enseignant) {
-	    enseignantsMap.put(enseignant.getId(), enseignant); // Ajout d'un enseignant à la Map
-	}
-
 
     // Méthodes CRUD pour les directeurs, matières, créneaux, etc.
 }

@@ -12,13 +12,7 @@ public interface AdminService {
 
     // Ajoute un enseignant à l'école
     void addEnseignant(Enseignant enseignant);
-    
-    // Supprime un directeur de l'école
-    void removeDirecteur(Directeur directeur);
-    
-    // Récupère un directeur par son identifiant
-    Directeur getDirecteurById(int id);
-    
+
     // Ajoute une matière à l'école
     void addMatiere(Matiere matiere);
     

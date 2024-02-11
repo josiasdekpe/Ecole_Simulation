@@ -80,12 +80,12 @@ public class DirecteurServlet extends HttpServlet {
     }
 
     private void assignEnseignantToMatiere(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int enseignantId = Integer.parseInt(request.getParameter("enseignantId"));
+    	String enseignantUsername = request.getParameter("enseignantUsername");
         int matiereId = Integer.parseInt(request.getParameter("matiereId"));
         DaoEnseignant daoEnseignant = new DaoEnseignant();
         DaoMatiere daoMatiere = new DaoMatiere();       
         // Récupération de l'enseignant et de la matière
-        Enseignant enseignant = daoEnseignant.getEnseignantById(enseignantId); 
+        Enseignant enseignant = daoEnseignant.getEnseignantByUsername(enseignantUsername); 
         Matiere matiere = daoMatiere.getMatiereById(matiereId); 
         
         // Assignation de l'enseignant à la matière

@@ -5,38 +5,35 @@ import java.util.List;
 
 public class Directeur {
 
-    private static int count = 0; // Compteur pour générer des identifiants uniques
-
-    private int id;
-    private String nom;
-    private String prenom;
+    private String username;
+    private String password;
     private List<Matiere> matieres = new ArrayList<>();
     private List<Enseignant> enseignants = new ArrayList<>();
 
-    public Directeur(String nom, String prenom) {
-        this.id = ++count; // Incrémenter le compteur et affecter l'ID du directeur
-        this.nom = nom;
-        this.prenom = prenom;
+    public Directeur(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+    
+    public boolean authenticate(String password) {
+        // Vérifie si le mot de passe fourni correspond au mot de passe enregistré pour le directeur
+        return this.password.equals(password);
+    }
+    
+    public String getUsername() {
+        return username;
+    }
+    
+    public String getPassword() {
+        return password;
     }
 
-    public int getId() {
-        return id;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public String getNom() {
-        return nom;
-    }
-
-    public void setNom(String nom) {
-        this.nom = nom;
-    }
-
-    public String getPrenom() {
-        return prenom;
-    }
-
-    public void setPrenom(String prenom) {
-        this.prenom = prenom;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public List<Matiere> getMatieres() {
@@ -55,9 +52,9 @@ public class Directeur {
         enseignants.remove(enseignant);
     }
 
-    public Enseignant getEnseignantById(int id) {
+    public Enseignant getEnseignantByUsername(String username) {
         for (Enseignant e : enseignants) {
-            if (e.getId() == id) {
+            if (e.getUsername() == username) {
                 return e;
             }
         }
@@ -76,13 +73,8 @@ public class Directeur {
 
     @Override
     public String toString() {
-        return "Directeur [id=" + id + ", nom=" + nom + ", prenom=" + prenom + ", matieres=" + matieres + "]";
+        return "Directeur [username =" + username + ", matieres=" + matieres + "]";
     }
-
-	public void setId(int Id) {
-		// TODO Auto-generated method stub
-		this.id = Id ;
-	}
 
 	public Matiere getMatiereByName(String nomMatiere) {
         for (Matiere m : matieres) {

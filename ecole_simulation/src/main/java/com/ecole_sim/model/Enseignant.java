@@ -5,39 +5,36 @@ import java.util.List;
 
 public class Enseignant {
 
-    private static int count = 0; // Compteur pour générer des identifiants uniques
-
-    private int id;
-    private String nom;
-    private String prenom;
+    private String username;
+    private String password;
     private List<Matiere> matieres = new ArrayList<>();
     private List<Creneau> creneaux = new ArrayList<>();
 
     
-    public Enseignant(String nom, String prenom) {
-        this.id = ++count; // Incrémenter le compteur et affecter l'ID de l'enseignant
-        this.nom = nom;
-        this.prenom = prenom;
+    public Enseignant(String username, String password) {
+        this.username = username;
+        this.password = password;
     }
 
-    public int getId() {
-        return id;
+    public boolean authenticate(String password) {
+        // Vérifie si le mot de passe fourni correspond au mot de passe enregistré pour le directeur
+        return this.password.equals(password);
+    }
+    
+    public String getUsername() {
+        return username;
     }
 
-    public String getNom() {
-        return nom;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public void setNom(String nom) {
-        this.nom = nom;
+    public String getPassword() {
+        return password;
     }
 
-    public String getPrenom() {
-        return prenom;
-    }
-
-    public void setPrenom(String prenom) {
-        this.prenom = prenom;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public List<Matiere> getMatieres() {
@@ -50,7 +47,7 @@ public class Enseignant {
 
     @Override
     public String toString() {
-        return "Enseignant [id=" + id + ", nom=" + nom + ", prenom=" + prenom + ", matieres=" + matieres + "]";
+        return "Enseignant [username=" + username + ", matieres=" + matieres + "]";
     }
 
     public Matiere getMatiereByName(String nomMatiere) {
@@ -76,11 +73,6 @@ public class Enseignant {
     public List<Creneau> getCreneaux() {
         return creneaux;
     }
-
-	public void setId(int i) {
-		// TODO Auto-generated method stub
-		this.id = i;
-	}
 
     public void updateCreneau(Creneau creneau) {
         for (Creneau c : creneaux) {
