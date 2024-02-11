@@ -18,6 +18,8 @@ import com.ecole_sim.model.DaoDirecteur;
 import com.ecole_sim.model.DaoEnseignant;
 import com.ecole_sim.model.Directeur;
 import com.ecole_sim.model.Enseignant;
+import com.ecole_sim.service.AdminService;
+import com.ecole_sim.util.ServiceLocator;
 
 /**
  * Servlet Filter implementation class AuthenticationFilter
@@ -25,15 +27,16 @@ import com.ecole_sim.model.Enseignant;
 @WebFilter("/login")
 public class AuthenticationFilter implements Filter {
 
+    private AdminService adminService = ServiceLocator.getAdminService();	
     private DaoAdmin daoAdmin;
     private DaoDirecteur daoDirecteur;
     private DaoEnseignant daoEnseignant;
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         // Initialisation des ressources nécessaires, par exemple, l'accès à la base de données ou aux services
-        daoAdmin = new DaoAdmin();
-        daoDirecteur = new DaoDirecteur();
-        daoEnseignant = new DaoEnseignant();
+        daoAdmin = adminService.getDaoAdmin();
+        daoDirecteur = adminService.getDaoDirecteur();
+        daoEnseignant = adminService.getDaoEnseignant();
     }
 
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)

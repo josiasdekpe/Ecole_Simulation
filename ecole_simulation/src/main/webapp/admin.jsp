@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="com.ecole_sim.service.AdminServiceImpl, com.ecole_sim.service.AdminService" %>
 <%@ page import="com.ecole_sim.model.*" %>
-<%@ page import="com.ecole_sim.util.ServiceLocator, java.util.Map" %>
+<%@ page import="com.ecole_sim.util.ServiceLocator, java.util.Map, java.util.List" %>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -11,7 +11,16 @@
 </head>
 <body>
     <h1>Admin Dashboard</h1>
-    
+        <!-- Formulaire pour ajouter un directeur -->
+    <h2>Ajouter un Directeur</h2>
+    <form action="admin" method="post">
+        <input type="hidden" name="action" value="addDirecteur">
+        <label for="username">UsernameDirecteur:</label><br>
+        <input type="text" id="username" name="username"><br>
+        <label for="password">PasswordDirecteur:</label><br>
+        <input type="text" id="password" name="password"><br><br>
+        <input type="submit" value="Ajouter Directeur">
+    </form>
     <!-- Tableau pour afficher la liste des directeurs -->
     <h2>Liste des Directeurs</h2>
     <table border="1">
@@ -40,8 +49,16 @@
         </tbody>
     </table>
 
-    <!-- Lien pour ajouter un directeur -->
-    <a href="ajoutDirecteur.jsp">Ajouter un Directeur</a>
+	    <!-- Formulaire pour ajouter un enseignant -->
+    <h2>Ajouter un Enseignant</h2>
+    <form action="admin" method="post">
+        <input type="hidden" name="action" value="addEnseignant">
+        <label for="username">UsernameEnseignant:</label><br>
+        <input type="text" id="username" name="username"><br>
+        <label for="password">PasswordEnseignant:</label><br>
+        <input type="text" id="password" name="password"><br><br>
+        <input type="submit" value="Ajouter Enseignant">
+    </form>
 
     <!-- Tableau pour afficher la liste des enseignants -->
     <h2>Liste des Enseignants</h2>
@@ -69,10 +86,15 @@
             <% } %>
         </tbody>
     </table>
-
-    <!-- Lien pour ajouter un enseignant -->
-    <a href="ajoutEnseignant.jsp">Ajouter un Enseignant</a>
-
+	
+    <!-- Formulaire pour ajouter une matière -->
+    <h2>Ajouter une Matière</h2>
+    <form action="admin" method="post">
+        <input type="hidden" name="action" value="addMatiere">
+        <label for="nomMatiere">Nom:</label><br>
+        <input type="text" id="nomMatiere" name="nom"><br><br>
+        <input type="submit" value="Ajouter Matière">
+    </form>
     <!-- Tableau pour afficher la liste des matières -->
     <h2>Liste des Matières</h2>
     <table border="1">
@@ -97,9 +119,32 @@
             <% } %>
         </tbody>
     </table>
-
-    <!-- Lien pour ajouter une matière -->
-    <a href="ajoutMatiere.jsp">Ajouter une Matière</a>
+<!-- Formulaire pour ajouter un créneau -->
+<h2>Ajouter un Créneau</h2>
+<form action="admin" method="post">
+    <input type="hidden" name="action" value="addCreneau">
+    <label for="dateCreneau">Date:</label><br>
+    <input type="text" id="dateCreneau" name="date" placeholder="YYYY-MM-DD"><br>
+    <label for="plageHoraire">Plage Horaire:</label><br>
+    <select id="plageHoraire" name="plageHoraire">
+        <option value="8h-10h">8h-10h</option>
+        <option value="10h-12h">10h-12h</option>
+        <option value="15h-17h">15h-17h</option>
+        <option value="17h-19h">17h-19h</option>
+    </select><br>
+    <label for="nomMatiereCreneau">Nom Matière:</label><br>
+    <select id="nomMatiereCreneau" name="nomMatiere">
+        <!-- Afficher les options avec les matières actuelles -->
+        <% 
+            // Récupérer la liste des matières à partir du service
+            List<Matiere> matieres = adminService.getDaoMatiere().getMatieres();
+            for (Matiere matiere : matieres) {
+        %>
+        <option value="<%= matiere.getNom() %>"><%= matiere.getNom() %></option>
+        <% } %>
+    </select><br><br>
+    <input type="submit" value="Ajouter Créneau">
+</form>
 
     <!-- Tableau pour afficher la liste des créneaux -->
     <h2>Liste des Créneaux</h2>
@@ -129,8 +174,6 @@
         </tbody>
     </table>
 
-    <!-- Lien pour ajouter un créneau -->
-    <a href="ajoutCreneau.jsp">Ajouter un Créneau</a>
 
     <!-- Formulaire pour modifier le mot de passe de l'administrateur -->
     <h2>Modifier le Mot de Passe de l'Administrateur</h2>
@@ -146,6 +189,22 @@
     <input type="password" id="newPassword" name="newPassword"><br><br>
     <input type="submit" value="Modifier le Mot de Passe">
 </form>
+
+    <!-- Bouton de déconnexion -->
+    <form action="login.html" method="get">
+        <input type="submit" value="Logout">
+    </form>
+    
+<script>
+    // Récupérer le message de confirmation de la requête
+    var confirmationMessage = "<%= request.getAttribute("confirmationMessage") %>";
+    
+    // Vérifier si le message de confirmation est défini et non vide
+    if (confirmationMessage && confirmationMessage.trim().length > 5) {
+        // Afficher une pop-up avec le message de confirmation
+        alert(confirmationMessage);
+    }
+</script>
 
 </body>
 </html>

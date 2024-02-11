@@ -12,7 +12,7 @@ public class DaoEnseignant {
     public DaoEnseignant() {
         this.enseignantsMap = new HashMap<>(); // Initialisation de la Map
         // Ajout d'un enseignant par défaut avec un ID 1 lors de l'initialisation de la classe
-        Enseignant defaultEnseignant = new Enseignant("enseignant", "enseignant");
+        Enseignant defaultEnseignant = new Enseignant("enseignant0", "enseignant0");
         enseignantsMap.put(defaultEnseignant.getUsername(), defaultEnseignant);
     }
 

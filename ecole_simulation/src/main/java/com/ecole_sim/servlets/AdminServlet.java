@@ -29,11 +29,6 @@ public class AdminServlet extends HttpServlet {
         this.adminService = ServiceLocator.getAdminService();
     }
     
-/*    public AdminServlet(AdminService adminService) {
-        super();
-        this.adminService = adminService; 
-    }
-*/
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
@@ -52,24 +47,26 @@ public class AdminServlet extends HttpServlet {
     }
 
     private void addEnseignant(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String nom = request.getParameter("nom");
-        String prenom = request.getParameter("prenom");
-        Enseignant enseignant = new Enseignant(nom, prenom);
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+        Enseignant enseignant = new Enseignant(username, password);
         adminService.addEnseignant(enseignant);
         
-        // Rediriger vers une page de confirmation par exemple
-        response.sendRedirect("confirmation.jsp");
+        // Afficher une pop-up de confirmation par exemple
+        request.setAttribute("confirmationMessage", "Opération effectuée avec succès !");
+        request.getRequestDispatcher("admin.jsp").forward(request, response);
 	}
 
 	private void addDirecteur(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String nom = request.getParameter("nom");
-        String prenom = request.getParameter("prenom");
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
         
-        Directeur directeur = new Directeur(nom, prenom);
+        Directeur directeur = new Directeur(username, password);
         adminService.addDirecteur(directeur);
         
-        // Rediriger vers une page de confirmation par exemple
-        response.sendRedirect("confirmation.jsp");
+        // Afficher une pop-up de confirmation par exemple
+        request.setAttribute("confirmationMessage", "Opération effectuée avec succès !");
+        request.getRequestDispatcher("admin.jsp").forward(request, response);
     }
 
     private void addMatiere(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -81,8 +78,9 @@ public class AdminServlet extends HttpServlet {
         Matiere matiere = new Matiere(nom, directeur);
         adminService.addMatiere(matiere);
         
-        // Rediriger vers une page de confirmation par exemple
-        response.sendRedirect("confirmation.jsp");
+        // Afficher une pop-up de confirmation par exemple
+        request.setAttribute("confirmationMessage", "Opération effectuée avec succès !");
+        request.getRequestDispatcher("admin.jsp").forward(request, response);
     }
 
     private void addCreneau(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -102,18 +100,20 @@ public class AdminServlet extends HttpServlet {
         // Ajouter le créneau
         adminService.addCreneau(creneau);
         
-        // Rediriger vers une page de confirmation par exemple
-        response.sendRedirect("confirmation.jsp");
+        // Afficher une pop-up de confirmation par exemple
+        request.setAttribute("confirmationMessage", "Opération effectuée avec succès !");
+        request.getRequestDispatcher("admin.jsp").forward(request, response);
     }
 
     private void updateAdminPassword(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String newPassword = request.getParameter("newPassword");
-        String username = request.getParameter("username");
         // Mettre à jour le mot de passe de l'administrateur par défaut
-        adminService.changeAdminPassword(username, newPassword);
+        adminService.changeAdminPassword("admin", newPassword);
         
-        // Rediriger vers une page de confirmation par exemple
-        response.sendRedirect("confirmation.jsp");
+        // Afficher une pop-up de confirmation par exemple
+        request.setAttribute("confirmationMessage", "Opération effectuée avec succès !");
+        request.getRequestDispatcher("admin.jsp").forward(request, response);
+
     }
 
     // Méthode pour convertir une chaîne en objet Date
