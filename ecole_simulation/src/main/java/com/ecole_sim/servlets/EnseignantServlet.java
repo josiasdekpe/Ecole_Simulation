@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -12,7 +11,6 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import com.ecole_sim.model.Creneau;
 import com.ecole_sim.service.EnseignantService;
 
 @WebServlet("/enseignant")
@@ -34,8 +32,6 @@ public class EnseignantServlet extends HttpServlet {
             enseigneMatiere(request, response);
         } else if ("updateCreneau".equals(action)) {
             updateCreneau(request, response);
-        } else if ("getCreneaux".equals(action)) {
-                getCreneaux(request, response);
         } else if ("peutenseignerMatiere".equals(action)) {
             peutEnseignerMatiere(request, response);
         }
@@ -77,21 +73,6 @@ public class EnseignantServlet extends HttpServlet {
         // Redirection vers une page de confirmation
         response.sendRedirect("confirmation.jsp");
     }
-    
-    
-    private void getCreneaux(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int enseignantId = Integer.parseInt(request.getParameter("enseignantId"));
-
-        // Appeler la méthode du service pour récupérer les créneaux de l'enseignant
-        List<Creneau> creneaux = enseignantService.getCreneaux(enseignantId);
-
-        // Mettre les créneaux dans les attributs de la requête pour les rendre disponibles dans la JSP
-        request.setAttribute("creneaux", creneaux);
-
-        // Dispatcher vers une JSP qui affiche les créneaux de l'enseignant
-        request.getRequestDispatcher("creneaux.jsp").forward(request, response);
-    }
-
 
     // Méthode pour convertir une chaîne en objet Date
     private Date parseDate(String dateString) {

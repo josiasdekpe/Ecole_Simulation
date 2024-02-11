@@ -1,7 +1,6 @@
 package com.ecole_sim.service;
 
 import java.util.Date;
-import java.util.List;
 
 import com.ecole_sim.model.Creneau;
 import com.ecole_sim.model.DaoCreneau;
@@ -16,10 +15,6 @@ public class EnseignantServiceImpl implements EnseignantService {
     
     public EnseignantServiceImpl(DaoEnseignant daoEnseignant) {
         this.daoEnseignant = daoEnseignant;
-    }
-
-    public List<Creneau> getCreneaux(int enseignantId) {
-        return daoEnseignant.getCreneaux(enseignantId);
     }
 
     public void updateCreneau(int creneauId) {
@@ -46,9 +41,9 @@ public class EnseignantServiceImpl implements EnseignantService {
         
         // Vérifier si l'enseignant, la matière et le créneau existent
         if (enseignant != null && matiere != null) {
-            // Vérifier si l'enseignant enseigne déjà la matière
+            // Vérifier si l'enseignant est déjà affecté à la matière
             if (!matiere.isEnseignedBy(enseignant)) {
-                // Ajouter l'enseignant à la liste des enseignants enseignant la matière
+                // Ajouter l'enseignant à la liste des enseignants affectés à la matière
                 matiere.addEnseignant(enseignant);
             }
             if (!enseignant.peutenseignerMatiere(matiere)) {
