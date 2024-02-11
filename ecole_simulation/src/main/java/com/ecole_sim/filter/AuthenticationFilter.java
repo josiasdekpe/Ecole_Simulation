@@ -22,7 +22,7 @@ import com.ecole_sim.model.Enseignant;
 /**
  * Servlet Filter implementation class AuthenticationFilter
  */
-@WebFilter("/login.jsp")
+@WebFilter("/login")
 public class AuthenticationFilter implements Filter {
 
     private DaoAdmin daoAdmin;

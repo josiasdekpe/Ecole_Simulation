@@ -48,6 +48,10 @@ public class DaoCreneau {
         creneauxMap.remove(id);
     }
 
+    public List<Creneau> getCreneaux() {
+        return new ArrayList<>(creneauxMap.values()); // Récupération de tous les enseignants depuis la Map
+    }    
+    
     // Méthode pour générer un nouvel ID unique pour un créneau
     private int generateNewId() {
         // On trouve le plus grand ID actuel et on l'incrémente de 1 pour obtenir un nouvel ID unique
@@ -59,4 +63,5 @@ public class DaoCreneau {
         }
         return maxId + 1;
     }
+    
 }

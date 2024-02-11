@@ -2,39 +2,38 @@ package com.ecole_sim.service;
 
 import java.util.Date;
 
-import com.ecole_sim.model.Creneau;
+
 import com.ecole_sim.model.DaoCreneau;
 import com.ecole_sim.model.DaoEnseignant;
 import com.ecole_sim.model.DaoMatiere;
+import com.ecole_sim.model.Creneau;
 import com.ecole_sim.model.Enseignant;
 import com.ecole_sim.model.Matiere;
 
 public class EnseignantServiceImpl implements EnseignantService {
 
     private DaoEnseignant daoEnseignant;
+    private DaoCreneau daoCreneau;
+    private DaoMatiere daoMatiere;
     
-    public EnseignantServiceImpl(DaoEnseignant daoEnseignant) {
+    public EnseignantServiceImpl(DaoEnseignant daoEnseignant, DaoCreneau daoCreneau, DaoMatiere daoMatiere) {
         this.daoEnseignant = daoEnseignant;
+        this.daoCreneau = daoCreneau;
+        this.daoMatiere = daoMatiere;
     }
 
     public void updateCreneau(int creneauId) {
-    	DaoCreneau daoCreneau = new DaoCreneau();
     	Creneau creneau = daoCreneau.getCreneauById(creneauId);
         daoEnseignant.updateCreneau(creneau);
     }
 
 	public void peutenseignerMatiere(String enseignantUsername, int matiereId) {
-        DaoEnseignant daoEnseignant = new DaoEnseignant();
-        DaoMatiere daoMatiere = new DaoMatiere();
         Enseignant enseignant = daoEnseignant.getEnseignantByUsername(enseignantUsername);
         Matiere matiere = daoMatiere.getMatiereById(matiereId);
         enseignant.addMatiere(matiere);
     }
 	
     public void enseigneMatiere(String enseignantUsername, int matiereId, Date date, String plageHoraire) {
-        DaoEnseignant daoEnseignant = new DaoEnseignant();
-        DaoMatiere daoMatiere = new DaoMatiere();
-    	DaoCreneau daoCreneau = new DaoCreneau();
         Enseignant enseignant = daoEnseignant.getEnseignantByUsername(enseignantUsername);
         Matiere matiere = daoMatiere.getMatiereById(matiereId);
 

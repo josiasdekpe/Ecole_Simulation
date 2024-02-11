@@ -15,22 +15,25 @@ import com.ecole_sim.model.Enseignant;
 import com.ecole_sim.model.Matiere;
 import com.ecole_sim.model.Creneau;
 import com.ecole_sim.service.AdminService;
+import com.ecole_sim.util.ServiceLocator;
 
 @WebServlet("/admin")
 public class AdminServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     
-    private AdminService adminService; 
+//    private AdminService adminService; 
+    private AdminService adminService = ServiceLocator.getAdminService();
     
     public AdminServlet() {
         super();
+        this.adminService = ServiceLocator.getAdminService();
     }
     
-    public AdminServlet(AdminService adminService) {
+/*    public AdminServlet(AdminService adminService) {
         super();
         this.adminService = adminService; 
     }
-
+*/
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");

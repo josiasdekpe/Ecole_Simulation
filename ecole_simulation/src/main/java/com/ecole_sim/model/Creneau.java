@@ -11,6 +11,12 @@ public class Creneau {
     private String plageHoraire;
     private Matiere matiere;
     private Enseignant enseignant;
+    
+    
+    public Creneau(Date date, String plageHoraire, Matiere matiere) {
+        this(date, plageHoraire, matiere, null);
+    }
+    
 
     public Creneau(Date date, String plageHoraire, Matiere matiere, Enseignant enseignant) {
         this.id = ++count; // Incrémenter le compteur et affecter l'ID du créneau
@@ -65,6 +71,5 @@ public class Creneau {
 	public void setId(int newId) {
 		// TODO Auto-generated method stub
 		this.id = newId;
-
 	}
 }
