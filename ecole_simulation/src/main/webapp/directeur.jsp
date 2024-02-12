@@ -12,6 +12,10 @@
 </head>
 <body>
     <h1>Directeur Dashboard</h1>
+        <!-- Bouton de déconnexion -->
+    <form action="login.html" method="get">
+        <input type="submit" value="Logout">
+    </form>
     
     <% 
      // Récupérer l'instance de AdminService à partir de la configuration de l'application
@@ -53,9 +57,9 @@
     <h2>Ajouter un Enseignant</h2>
     <form action="directeur" method="post">
         <input type="hidden" name="action" value="addEnseignant">
-        <label for="enseignantUsername">EnseignantUsername:</label><br>
+        <label for="enseignantUsername"> UsernameEnseignant:</label><br>
         <input type="text" id="enseignantUsername" name="enseignantUsername"><br>
-        <label for="enseignantPassword">EnseignantPassword:</label><br>
+        <label for="enseignantPassword"> PasswordEnseignant:</label><br>
         <input type="text" id="enseignantPassword" name="enseignantPassword"><br><br>
         <input type="submit" value="Ajouter Enseignant">
     </form>
@@ -93,6 +97,16 @@
 <form action="directeur" method="post">
     <input type="hidden" name="action" value="assignEnseignantToMatiere">
     
+        <!-- Sélection de la matière -->
+    <label for="matiere">Matière:</label><br>
+    <select id="matiere" name="matiereId">
+        <% 
+        for (Matiere matiere : daoMatiere.getMatieres()) {
+        %>
+            <option value="<%= matiere.getNom() %>"><%= matiere.getNom() %></option>
+        <% } %>
+    </select><br><br>
+    
     <!-- Sélection de l'enseignant -->
     <label for="enseignant">Enseignant:</label><br>
     <select id="enseignant" name="enseignantUsername">
@@ -102,16 +116,6 @@
             <option value="<%= enseignant.getUsername() %>"><%= enseignant.getUsername() %></option>
         <% } %>
     </select><br>
-    
-    <!-- Sélection de la matière -->
-    <label for="matiere">Matière:</label><br>
-    <select id="matiere" name="matiereId">
-        <% 
-        for (Matiere matiere : daoMatiere.getMatieres()) {
-        %>
-            <option value="<%= matiere.getNom() %>"><%= matiere.getNom() %></option>
-        <% } %>
-    </select><br><br>
     
     <!-- Bouton pour soumettre le formulaire -->
     <input type="submit" value="Assigner Enseignant à Matière">
@@ -170,7 +174,7 @@
     
     <!-- Champ pour la date -->
     <label for="dateCreneau">Date:</label><br>
-    <input type="text" id="dateCreneau" name="date" placeholder="YYYY-MM-DD"><br>
+    <input type="text" id="dateCreneau" name="date" placeholder="dd/MM/yyyy"><br>
     
     <!-- Sélection de la plageHoraire -->
     <label for="plageHoraire">Plage Horaire:</label><br>
@@ -206,13 +210,12 @@
 </form>
 
 
-    
 <!-- Tableau pour afficher la liste des créneaux -->
-<h2>Liste des Créneaux</h2>
+<h2>Liste des Créneaux * Modifier Créneau </h2>
 <table border="1">
     <thead>
         <tr>
-            <th>Id Creneau</th>
+            <th>Id Créneau</th>
             <th>Date</th>
             <th>Plage Horaire</th>
             <th>Matière</th>
@@ -243,15 +246,22 @@
             <!-- Ajouter une colonne pour les boutons d'édition -->
             <td>
                 <!-- Bouton "Modifier Créneau" -->
-                <button onclick="showEditForm('<%= creneau.getId() %>')">Modifier Créneau</button>
+                <button id="editButton_<%= creneau.getId() %>" onclick="showEditForm('<%= creneau.getId() %>'); this.style.display='none'">Modifier Créneau</button>
 				<!-- Formulaire caché pour l'édition du créneau -->
-				<form id="editForm_<%= creneau.getId() %>" action="directeur" method="post" style="display: ;">
+				<form id="editForm_<%= creneau.getId() %>" action="directeur" method="post" style="display: none;">
 				    <input type="hidden" name="action" value="updateCreneau">
 				    <input type="hidden" name="creneauId" value="<%= creneau.getId() %>">
-				    Nouvelle date: <input type="text" name="date" placeholder="YYYY-MM-DD" value="<%= formattedDate %>"><br>
-				    Nouvelle plage horaire: <input type="text" name="plageHoraire" value="<%= creneau.getPlageHoraire() %>"><br>
-				    Nouvelle matière:
-				    <select name="matiereNom">
+				    <label for="newDate_<%= creneau.getId() %>">Nouvelle date:</label>
+                    <input type="text" id="newDate_<%= creneau.getId() %>" name="date" placeholder="dd/MM/yyyy" value="<%= formattedDate %>"><br>                  
+				    <label for="newPlageHoraire_<%= creneau.getId() %>">Nouvelle plage horaire:</label>
+				    <select id="newPlageHoraire_<%= creneau.getId() %>" name="plageHoraire">
+				        <option value="8h-10h">8h-10h</option>
+				        <option value="10h-12h">10h-12h</option>
+				        <option value="15h-17h">15h-17h</option>
+				        <option value="17h-19h">17h-19h</option>
+				    </select><br>
+				    <label for="newMatiere_<%= creneau.getId() %>">Nouvelle matière:</label>
+				    <select id="newMatiere_<%= creneau.getId() %>" name="matiereNom">
 				        <% 
 				        for (Matiere matiere : directeurService.getDaoMatiere().getMatieres()) {
 				            String selected = (matiere.getNom().equals(creneau.getMatiere().getNom())) ? "selected" : "";
@@ -259,8 +269,8 @@
 				            <option value="<%= matiere.getNom() %>" <%= selected %>><%= matiere.getNom() %></option>
 				        <% } %>
 				    </select><br>
-				    Nouvel enseignant:
-				    <select name="enseignantNom">
+				    <label for="newEnseignant_<%= creneau.getId() %>">Nouvel enseignant:</label>
+				    <select id="newEnseignant_<%= creneau.getId() %>" name="enseignantNom">
 				        <% 
 				        for (Enseignant enseignant : directeurService.getDaoEnseignant().getEnseignants()) {
 				            String selected = (enseignant.getUsername().equals(creneau.getEnseignant().getUsername())) ? "selected" : "";
@@ -268,26 +278,24 @@
 				            <option value="<%= enseignant.getUsername() %>" <%= selected %>><%= enseignant.getUsername() %></option>
 				        <% } %>
 				    </select><br>
-				    <input type="submit" value="Enregistrer">
+				    <input type="submit" value="Enregistrer" onclick="document.getElementById('editButton_<%= creneau.getId() %>').style.display='block'">
 				    <!-- Bouton "Annuler" pour masquer le formulaire -->
-				    <button type="button" onclick="hideEditForm('<%= creneau.getId() %>')">Annuler</button>
+				    <button type="button" onclick="hideEditForm('<%= creneau.getId() %>'); document.getElementById('editButton_<%= creneau.getId() %>').style.display='block'">Annuler</button>
 				</form>
-
-
             </td>
         </tr>
         <% } %>
     </tbody>
 </table>
-
+    <h1></h1>
+    <!-- Bouton de déconnexion -->
+    <form action="login.html" method="get">
+        <input type="submit" value="Logout">
+    </form>
+    
 <!-- Script JavaScript pour afficher le formulaire d'édition lors du clic sur le bouton "Modifier Créneau" -->
 <script>
     function showEditForm(creneauId) {
-        // Cacher tous les formulaires d'édition
-        var editForms = document.querySelectorAll('form[id^="editForm_"]');
-        editForms.forEach(function(form) {
-            form.style.display = 'none';
-        });
         // Afficher le formulaire d'édition spécifique au créneau sélectionné
         var specificEditForm = document.getElementById('editForm_' + creneauId);
         specificEditForm.style.display = 'block';
@@ -299,6 +307,7 @@
         specificEditForm.style.display = 'none';
     }
 </script>
+
 
     
 	<script>

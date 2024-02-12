@@ -54,9 +54,7 @@ public class DirecteurServlet extends HttpServlet {
         // Ajout de la matière
         directeurService.addMatiere(matiere);
         
-        // Afficher une pop-up de confirmation par exemple
-        request.setAttribute("confirmationMessage", "Opération effectuée avec succès !");
-        request.getRequestDispatcher("directeur.jsp").forward(request, response);
+        response.sendRedirect(request.getContextPath() + "/directeur.jsp");
     }
 
     private void addEnseignant(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -69,9 +67,7 @@ public class DirecteurServlet extends HttpServlet {
         // Ajout de l'enseignant
         directeurService.addEnseignant(enseignant);
         
-        // Afficher une pop-up de confirmation par exemple
-        request.setAttribute("confirmationMessage", "Opération effectuée avec succès !");
-        request.getRequestDispatcher("directeur.jsp").forward(request, response);
+        response.sendRedirect(request.getContextPath() + "/directeur.jsp");
     }
 
     private void assignEnseignantToMatiere(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -85,8 +81,7 @@ public class DirecteurServlet extends HttpServlet {
         directeurService.assignEnseignantToMatiere(enseignant, matiere);
         
         // Afficher une pop-up de confirmation par exemple
-        request.setAttribute("confirmationMessage", "Opération effectuée avec succès !");
-        request.getRequestDispatcher("directeur.jsp").forward(request, response);
+        response.sendRedirect(request.getContextPath() + "/directeur.jsp");
     }
 
     
@@ -108,13 +103,11 @@ public class DirecteurServlet extends HttpServlet {
         // Ajouter le créneau
         directeurService.addCreneau(creneau);
         
-        // Afficher une pop-up de confirmation par exemple
-        request.setAttribute("confirmationMessage", "Opération effectuée avec succès !");
-        request.getRequestDispatcher("directeur.jsp").forward(request, response);
+        response.sendRedirect(request.getContextPath() + "/directeur.jsp");
     }
     
     // Méthode pour modifier un créneau
-    private void updateCreneau(HttpServletRequest request, HttpServletResponse response) {
+    private void updateCreneau(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String dateString = request.getParameter("date");
         String plageHoraire = request.getParameter("plageHoraire");
         String matiereNom = request.getParameter("matiereNom");  
@@ -131,11 +124,14 @@ public class DirecteurServlet extends HttpServlet {
         creneau.setId(creneauId);
         
         directeurService.updateCreneau(creneau);
+        // Redirection vers la même page
+        response.sendRedirect(request.getContextPath() + "/directeur.jsp");
+
 	}
 
     // Méthode pour convertir une chaîne en objet Date
     private Date parseDate(String dateString) {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         try {
             return formatter.parse(dateString);
         } catch (ParseException e) {

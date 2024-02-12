@@ -12,7 +12,7 @@ public class DaoDirecteur {
     public DaoDirecteur() {
         this.directeursMap = new HashMap<>(); // Initialisation de la Map
         // Ajout d'un directeur par défaut avec un ID 1
-        Directeur defaultDirecteur = new Directeur("directeur0", "directeur0");
+        Directeur defaultDirecteur = new Directeur("directeur", "directeur");
         directeursMap.put(defaultDirecteur.getUsername(), defaultDirecteur);
     }
 

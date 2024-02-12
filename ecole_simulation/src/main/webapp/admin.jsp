@@ -24,6 +24,10 @@
 </head>
 <body>
     <h1>Admin Dashboard</h1>
+        <!-- Bouton de déconnexion -->
+    <form action="login.html" method="get">
+        <input type="submit" value="Logout">
+    </form>
         <!-- Formulaire pour ajouter un directeur -->
     <h2>Ajouter un Directeur</h2>
     <form action="admin" method="post">
@@ -137,7 +141,7 @@
 <form action="admin" method="post">
     <input type="hidden" name="action" value="addCreneau">
     <label for="dateCreneau">Date:</label><br>
-    <input type="text" id="dateCreneau" name="date" placeholder="YYYY-MM-DD"><br>
+    <input type="text" id="dateCreneau" name="date" placeholder="dd/MM/yyyy"><br>
     <label for="plageHoraire">Plage Horaire:</label><br>
     <select id="plageHoraire" name="plageHoraire">
         <option value="8h-10h">8h-10h</option>
@@ -195,7 +199,7 @@
             %>
                 <tr>
                     <td><%= countCreneaux++ %></td>
-                    <td><%= creneau.getDate() %></td>
+                    <td><%= formattedDate %></td>
                     <td><%= creneau.getPlageHoraire() %></td>
                     <td><%= creneau.getMatiere().getNom() %></td>
                 </tr>
@@ -218,7 +222,7 @@
     <input type="password" id="newPassword" name="newPassword"><br><br>
     <input type="submit" value="Modifier le Mot de Passe">
 </form>
-
+	<h1></h1>
     <!-- Bouton de déconnexion -->
     <form action="login.html" method="get">
         <input type="submit" value="Logout">

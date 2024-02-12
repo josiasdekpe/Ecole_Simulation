@@ -111,7 +111,7 @@ public class AdminServlet extends HttpServlet {
 
     // Méthode pour convertir une chaîne en objet Date
     private Date parseDate(String dateString) {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         try {
             return formatter.parse(dateString);
         } catch (ParseException e) {
