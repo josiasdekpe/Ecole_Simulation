@@ -12,10 +12,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import com.ecole_sim.model.Creneau;
-import com.ecole_sim.model.DaoEnseignant;
-import com.ecole_sim.model.DaoMatiere;
-import com.ecole_sim.model.DaoCreneau;
-import com.ecole_sim.model.Directeur;
 import com.ecole_sim.model.Enseignant;
 import com.ecole_sim.model.Matiere;
 import com.ecole_sim.service.DirecteurService;
@@ -53,80 +49,87 @@ public class DirecteurServlet extends HttpServlet {
         String nom = request.getParameter("nom");
         
         // Création de la matière
-        Matiere matiere = new Matiere(nom, null);
+        Matiere matiere = new Matiere(nom);
         
         // Ajout de la matière
         directeurService.addMatiere(matiere);
         
-        // Redirection vers une page de confirmation
-        response.sendRedirect("confirmation.jsp");
+        // Afficher une pop-up de confirmation par exemple
+        request.setAttribute("confirmationMessage", "Opération effectuée avec succès !");
+        request.getRequestDispatcher("directeur.jsp").forward(request, response);
     }
 
     private void addEnseignant(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String nom = request.getParameter("nom");
-        String prenom = request.getParameter("prenom");
+        String enseignantUsername = request.getParameter("enseignantUsername");
+        String enseignantPassword = request.getParameter("enseignantPassword");
         
         // Création de l'enseignant
-        Enseignant enseignant = new Enseignant(nom, prenom);
+        Enseignant enseignant = new Enseignant(enseignantUsername, enseignantPassword);
         
         // Ajout de l'enseignant
         directeurService.addEnseignant(enseignant);
         
-        // Redirection vers une page de confirmation
-        response.sendRedirect("confirmation.jsp");
+        // Afficher une pop-up de confirmation par exemple
+        request.setAttribute("confirmationMessage", "Opération effectuée avec succès !");
+        request.getRequestDispatcher("directeur.jsp").forward(request, response);
     }
 
     private void assignEnseignantToMatiere(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	String enseignantUsername = request.getParameter("enseignantUsername");
-        int matiereId = Integer.parseInt(request.getParameter("matiereId"));
-        DaoEnseignant daoEnseignant = new DaoEnseignant();
-        DaoMatiere daoMatiere = new DaoMatiere();       
+        String matiereNom = request.getParameter("matiereId");      
         // Récupération de l'enseignant et de la matière
-        Enseignant enseignant = daoEnseignant.getEnseignantByUsername(enseignantUsername); 
-        Matiere matiere = daoMatiere.getMatiereById(matiereId); 
+        Enseignant enseignant = directeurService.getDaoEnseignant().getEnseignantByUsername(enseignantUsername); 
+        Matiere matiere = directeurService.getDaoMatiere().getMatiereByName(matiereNom); 
         
         // Assignation de l'enseignant à la matière
         directeurService.assignEnseignantToMatiere(enseignant, matiere);
         
-        // Redirection vers une page de confirmation
-        response.sendRedirect("confirmation.jsp");
+        // Afficher une pop-up de confirmation par exemple
+        request.setAttribute("confirmationMessage", "Opération effectuée avec succès !");
+        request.getRequestDispatcher("directeur.jsp").forward(request, response);
     }
 
     
     private void addCreneau(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String dateString = request.getParameter("date");
         String plageHoraire = request.getParameter("plageHoraire");
-        String nomMatiere = request.getParameter("nomMatiere");
+        String matiereNom = request.getParameter("matiereNom");  
+        String enseignantNom = request.getParameter("enseignantNom");
         
         // Convertir la chaîne en objet Date
         Date date = parseDate(dateString);
         
-        // Récupérer le directeur par défaut
-        Directeur directeur = new Directeur("Default", "Directeur");
-        
         // Récupérer la matière par son nom
-        Matiere matiere = directeur.getMatiereByName(nomMatiere);
-        if (matiere == null) {
-            // Gérer l'erreur si la matière n'est pas trouvée
-            response.sendError(HttpServletResponse.SC_NOT_FOUND, "La matière spécifiée n'a pas été trouvée.");
-            return;
-        }
-        
+        Matiere matiere = directeurService.getDaoMatiere().getMatiereByName(matiereNom);
+        Enseignant enseignant = directeurService.getDaoEnseignant().getEnseignantByUsername(enseignantNom);
         // Créer un créneau avec les paramètres fournis
-        Creneau creneau = new Creneau(date, plageHoraire, matiere, null); // null car nous n'avons pas encore les enseignants
+        Creneau creneau = new Creneau(date, plageHoraire, matiere, enseignant); // null car nous n'avons pas encore les enseignants
         
         // Ajouter le créneau
         directeurService.addCreneau(creneau);
         
-        // Rediriger vers une page de confirmation par exemple
-        response.sendRedirect("confirmation.jsp");
+        // Afficher une pop-up de confirmation par exemple
+        request.setAttribute("confirmationMessage", "Opération effectuée avec succès !");
+        request.getRequestDispatcher("directeur.jsp").forward(request, response);
     }
     
     // Méthode pour modifier un créneau
     private void updateCreneau(HttpServletRequest request, HttpServletResponse response) {
+        String dateString = request.getParameter("date");
+        String plageHoraire = request.getParameter("plageHoraire");
+        String matiereNom = request.getParameter("matiereNom");  
+        String enseignantNom = request.getParameter("enseignantNom");
+        
+        // Convertir la chaîne en objet Date
+        Date date = parseDate(dateString);
+        
+        // Récupérer la matière par son nom
+        Matiere matiere = directeurService.getDaoMatiere().getMatiereByName(matiereNom);
+        Enseignant enseignant = directeurService.getDaoEnseignant().getEnseignantByUsername(enseignantNom);
         int creneauId = Integer.parseInt(request.getParameter("creneauId"));
-        DaoCreneau daoCreneau = new DaoCreneau();
-		Creneau creneau = daoCreneau.getCreneauById(creneauId); 
+        Creneau creneau = new Creneau(date, plageHoraire, matiere, enseignant); 
+        creneau.setId(creneauId);
+        
         directeurService.updateCreneau(creneau);
 	}
 

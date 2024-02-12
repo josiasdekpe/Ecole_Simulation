@@ -39,7 +39,7 @@ public class EnseignantServlet extends HttpServlet {
 
     private void enseigneMatiere(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	String enseignantUsername = request.getParameter("enseignantUsername");
-        int matiereId = Integer.parseInt(request.getParameter("matiereId"));
+        String matiereNom = request.getParameter("matiereNom");
         String dateString = request.getParameter("date");
         String plageHoraire = request.getParameter("plageHoraire");
 
@@ -47,7 +47,7 @@ public class EnseignantServlet extends HttpServlet {
         Date date = parseDate(dateString);
 
         // Appeler la méthode du service pour enseigner la matière
-        enseignantService.enseigneMatiere(enseignantUsername, matiereId, date, plageHoraire);
+        enseignantService.enseigneMatiere(enseignantUsername, matiereNom, date, plageHoraire);
 
         // Redirection vers une page de confirmation
         response.sendRedirect("confirmation.jsp");
@@ -65,10 +65,10 @@ public class EnseignantServlet extends HttpServlet {
 
     private void peutEnseignerMatiere(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	String enseignantUsername = request.getParameter("enseignantUsername");
-        int matiereId = Integer.parseInt(request.getParameter("matiereId"));
+        String matiereNom = request.getParameter("matiereId");
 
         // Appeler la méthode du service pour vérifier si l'enseignant peut enseigner la matière
-        enseignantService.peutenseignerMatiere(enseignantUsername, matiereId);
+        enseignantService.peutenseignerMatiere(enseignantUsername, matiereNom);
 
         // Redirection vers une page de confirmation
         response.sendRedirect("confirmation.jsp");

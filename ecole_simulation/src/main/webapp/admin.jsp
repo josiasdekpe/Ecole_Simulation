@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="com.ecole_sim.service.AdminServiceImpl, com.ecole_sim.service.AdminService" %>
 <%@ page import="com.ecole_sim.model.*" %>
+<%@ page import="java.text.SimpleDateFormat, java.util.Date" %>
 <%@ page import="com.ecole_sim.util.ServiceLocator, java.util.Map, java.util.List" %>
 <!DOCTYPE html>
 <html lang="fr">
@@ -175,6 +176,22 @@
             int countCreneaux = 1;
             DaoCreneau daoCreneau = adminService.getDaoCreneau(); // Vous devez probablement implémenter un mécanisme pour récupérer cette instance
             for (Creneau creneau : daoCreneau.getCreneaux()) {
+                Date dateCreneau = creneau.getDate();
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                // Formater la date en utilisant le formateur créé
+                // Variable pour stocker la date formatée
+				String formattedDate = "";
+				
+				// Tenter de formater la date
+				try {
+				    // Formater la date en utilisant le formateur créé
+				    formattedDate = sdf.format(dateCreneau);
+				} catch (Exception e) {
+				    // En cas d'erreur, afficher un message d'erreur ou effectuer une action de gestion des erreurs
+				    formattedDate = "Date non disponible";
+				    // Vous pouvez également enregistrer l'erreur dans un fichier de journalisation ou afficher un message à l'utilisateur
+				    e.printStackTrace(); // Ceci affiche l'erreur dans la console du serveur pour le débogage
+				}
             %>
                 <tr>
                     <td><%= countCreneaux++ %></td>

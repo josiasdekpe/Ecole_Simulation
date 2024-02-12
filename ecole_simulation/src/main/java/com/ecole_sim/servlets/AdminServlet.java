@@ -72,10 +72,7 @@ public class AdminServlet extends HttpServlet {
     private void addMatiere(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String nom = request.getParameter("nom");
         
-        // Le directeur par défaut
-        Directeur directeur = new Directeur("Default", "Directeur");
-        
-        Matiere matiere = new Matiere(nom, directeur);
+        Matiere matiere = new Matiere(nom);
         adminService.addMatiere(matiere);
         
         // Afficher une pop-up de confirmation par exemple
@@ -91,11 +88,8 @@ public class AdminServlet extends HttpServlet {
         // Convertir la chaîne en objet Date
         Date date = parseDate(dateString);
         
-        // Récupérer le directeur par défaut
-        Directeur directeur = new Directeur("Default", "Directeur");
-        
         // Créer un créneau avec les paramètres fournis
-        Creneau creneau = new Creneau(date, plageHoraire, new Matiere(nomMatiere, directeur), null); // null car nous n'avons pas encore les enseignants
+        Creneau creneau = new Creneau(date, plageHoraire, new Matiere(nomMatiere), null); // null car nous n'avons pas encore les enseignants
         
         // Ajouter le créneau
         adminService.addCreneau(creneau);
@@ -113,7 +107,6 @@ public class AdminServlet extends HttpServlet {
         // Afficher une pop-up de confirmation par exemple
         request.setAttribute("confirmationMessage", "Opération effectuée avec succès !");
         request.getRequestDispatcher("admin.jsp").forward(request, response);
-
     }
 
     // Méthode pour convertir une chaîne en objet Date

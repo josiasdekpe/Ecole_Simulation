@@ -1,7 +1,5 @@
 package com.ecole_sim.service;
 
-import java.util.List;
-
 import com.ecole_sim.model.Creneau;
 import com.ecole_sim.model.DaoCreneau;
 import com.ecole_sim.model.DaoEnseignant;
@@ -41,23 +39,17 @@ public class DirecteurServiceImpl implements DirecteurService {
     }    
     
     public void updateCreneau(Creneau creneau) {
-        List<Matiere> matieres = daoMatiere.getMatieres();
-        Matiere matiereDuDirecteur = getMatiereDuDirecteur(creneau, matieres);
-        if (matiereDuDirecteur != null) {
-            daoCreneau.updateCreneau(creneau);
-        } else {
-            throw new IllegalArgumentException("Ce créneau ne fait pas partie des créneaux de la matière gérée par ce directeur.");
-        }
+        daoCreneau.updateCreneau(creneau);
     }
 
-    // Méthode privée pour récupérer la matière du directeur pour un créneau donné
-    private Matiere getMatiereDuDirecteur(Creneau creneau, List<Matiere> matieres) {
-        for (Matiere matiere : matieres) {
-            if (creneau.getMatiere().equals(matiere)) {
-                return matiere;
-            }
-        }
-        return null; // Retourne null si le créneau n'appartient à aucune des matières gérées par le directeur
+	public DaoEnseignant getDaoEnseignant() {
+        return daoEnseignant;
+    }
+	public DaoMatiere getDaoMatiere() {
+        return daoMatiere;
+    }
+	public DaoCreneau getDaoCreneau() {
+        return daoCreneau;
     }
 
 }

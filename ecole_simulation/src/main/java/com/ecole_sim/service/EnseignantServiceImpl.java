@@ -32,15 +32,15 @@ public class EnseignantServiceImpl implements EnseignantService {
         daoEnseignant.updateCreneau(creneau);
     }
 
-	public void peutenseignerMatiere(String enseignantUsername, int matiereId) {
+	public void peutenseignerMatiere(String enseignantUsername, String matiereNom) {
         Enseignant enseignant = daoEnseignant.getEnseignantByUsername(enseignantUsername);
-        Matiere matiere = daoMatiere.getMatiereById(matiereId);
+        Matiere matiere = daoMatiere.getMatiereByName(matiereNom);
         enseignant.addMatiere(matiere);
     }
 	
-    public void enseigneMatiere(String enseignantUsername, int matiereId, Date date, String plageHoraire) {
+    public void enseigneMatiere(String enseignantUsername, String matiereNom, Date date, String plageHoraire) {
         Enseignant enseignant = daoEnseignant.getEnseignantByUsername(enseignantUsername);
-        Matiere matiere = daoMatiere.getMatiereById(matiereId);
+        Matiere matiere = daoMatiere.getMatiereByName(matiereNom);
 
         
         // Vérifier si l'enseignant, la matière et le créneau existent
