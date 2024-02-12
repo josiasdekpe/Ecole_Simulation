@@ -19,20 +19,17 @@ import com.ecole_sim.model.Directeur;
 import com.ecole_sim.model.Enseignant;
 import com.ecole_sim.model.Matiere;
 import com.ecole_sim.service.DirecteurService;
+import com.ecole_sim.util.ServiceLocator;
 
 @WebServlet("/directeur")
 public class DirecteurServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     
-    private DirecteurService directeurService; 
+    private DirecteurService directeurService = ServiceLocator.getDirecteurService(); 
     
     public DirecteurServlet() {
         super();
-    }
-    
-    public DirecteurServlet(DirecteurService directeurService) {
-        super();
-        this.directeurService = directeurService; 
+        this.directeurService = ServiceLocator.getDirecteurService();
     }
 
     @Override

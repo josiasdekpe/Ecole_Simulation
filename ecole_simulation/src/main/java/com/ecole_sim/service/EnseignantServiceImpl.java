@@ -16,6 +16,11 @@ public class EnseignantServiceImpl implements EnseignantService {
     private DaoCreneau daoCreneau;
     private DaoMatiere daoMatiere;
     
+    
+    public EnseignantServiceImpl() {
+    	this(new DaoEnseignant(),new DaoCreneau(),new DaoMatiere());
+    }
+    
     public EnseignantServiceImpl(DaoEnseignant daoEnseignant, DaoCreneau daoCreneau, DaoMatiere daoMatiere) {
         this.daoEnseignant = daoEnseignant;
         this.daoCreneau = daoCreneau;

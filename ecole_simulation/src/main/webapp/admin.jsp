@@ -7,6 +7,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+		.popup {
+		    position: fixed; /* La popup reste fixe par rapport à la fenêtre du navigateur */
+		    top: 50%; /* Centrage vertical */
+		    left: 50%; /* Centrage horizontal */
+		    transform: translate(-50%, -50%); /* Centrage précis */
+		    background-color: white;
+		    border: 1px solid black;
+		    padding: 20px;
+		    z-index: 9999; /* Assure que la popup est au-dessus de tous les autres éléments */
+		}
+    </style>
     <title>Admin Dashboard</title>
 </head>
 <body>
@@ -194,17 +206,16 @@
     <form action="login.html" method="get">
         <input type="submit" value="Logout">
     </form>
-    
-<script>
-    // Récupérer le message de confirmation de la requête
-    var confirmationMessage = "<%= request.getAttribute("confirmationMessage") %>";
-    
-    // Vérifier si le message de confirmation est défini et non vide
-    if (confirmationMessage && confirmationMessage.trim().length > 5) {
-        // Afficher une pop-up avec le message de confirmation
-        alert(confirmationMessage);
-    }
-</script>
 
+<script>
+// Récupérer le message de confirmation de la requête
+var confirmationMessage = "<%= request.getAttribute("confirmationMessage") %>";
+
+// Vérifier si le message de confirmation est défini et non vide
+if (confirmationMessage && confirmationMessage.trim().length > 5) {
+    // Afficher une pop-up avec le message de confirmation
+    alert(confirmationMessage);
+}
+</script>
 </body>
 </html>

@@ -15,6 +15,9 @@ public class DirecteurServiceImpl implements DirecteurService {
     private DaoEnseignant daoEnseignant;
     private DaoCreneau daoCreneau;
 
+    public DirecteurServiceImpl() {
+    	this(new DaoMatiere(), new DaoEnseignant(), new DaoCreneau());
+    }
     public DirecteurServiceImpl(DaoMatiere daoMatiere, DaoEnseignant daoEnseignant, DaoCreneau daoCreneau) {
         this.daoMatiere = daoMatiere;
         this.daoEnseignant = daoEnseignant;
