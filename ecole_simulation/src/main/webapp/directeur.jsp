@@ -123,7 +123,7 @@
 
 
 
-<!-- Tableau pour afficher le croisement Directeur-Enseignant -->
+<!-- Tableau pour afficher le croisement Matière-Enseignant -->
 <h2>Matrice d'Assignations Matières-Enseignants</h2>
 <table border="1">
     <thead>

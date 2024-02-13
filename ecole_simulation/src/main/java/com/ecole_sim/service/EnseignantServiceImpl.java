@@ -59,4 +59,10 @@ public class EnseignantServiceImpl implements EnseignantService {
 	public DaoMatiere getDaoMatiere() {
         return daoMatiere;
     }
+	public DaoEnseignant getDaoEnseignant() {
+        return daoEnseignant;
+    }
+	public DaoCreneau getDaoCreneau() {
+		return daoCreneau;
+	}
 }

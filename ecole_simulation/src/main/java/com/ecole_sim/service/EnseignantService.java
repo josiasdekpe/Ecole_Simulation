@@ -3,6 +3,8 @@ package com.ecole_sim.service;
 import java.util.Date;
 
 import com.ecole_sim.model.Creneau;
+import com.ecole_sim.model.DaoCreneau;
+import com.ecole_sim.model.DaoEnseignant;
 import com.ecole_sim.model.DaoMatiere;
 
 
@@ -15,4 +17,6 @@ public interface EnseignantService {
     void updateCreneau(Creneau creneau);
     
     DaoMatiere getDaoMatiere();
+    DaoEnseignant getDaoEnseignant();
+    DaoCreneau getDaoCreneau();
 }

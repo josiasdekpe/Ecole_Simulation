@@ -24,7 +24,7 @@ public class EnseignantServlet extends HttpServlet {
 
     private EnseignantService enseignantService = ServiceLocator.getEnseignantService();
 
-    public EnseignantServlet(EnseignantService enseignantService) {
+    public EnseignantServlet() {
         super();
         this.enseignantService =  ServiceLocator.getEnseignantService();;
     }
@@ -33,7 +33,7 @@ public class EnseignantServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
         
-        if ("enseigneMatiere".equals(action)) {
+        if ("insertCreneau".equals(action)) {
             enseigneMatiere(request, response);
         } else if ("updateCreneau".equals(action)) {
             updateCreneau(request, response);
@@ -58,8 +58,7 @@ public class EnseignantServlet extends HttpServlet {
         // Appeler la méthode du service pour enseigner la matière
         enseignantService.enseigneMatiere(enseignant.getUsername(), matiereNom, date, plageHoraire);
 
-        // Redirection vers une page de confirmation
-        response.sendRedirect("confirmation.jsp");
+        response.sendRedirect(request.getContextPath() + "/enseignant.jsp");
     }
 
     // Méthode pour modifier un créneau
@@ -98,13 +97,12 @@ public class EnseignantServlet extends HttpServlet {
         // Appeler la méthode du service pour vérifier si l'enseignant peut enseigner la matière
         enseignantService.peutenseignerMatiere(enseignant.getUsername(), matiereNom);
 
-        // Redirection vers une page de confirmation
-        response.sendRedirect("confirmation.jsp");
+        response.sendRedirect(request.getContextPath() + "/enseignant.jsp");
     }
 
     // Méthode pour convertir une chaîne en objet Date
     private Date parseDate(String dateString) {
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         try {
             return formatter.parse(dateString);
         } catch (ParseException e) {
