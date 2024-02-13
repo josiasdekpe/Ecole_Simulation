@@ -9,6 +9,7 @@ import jakarta.servlet.ServletResponse;
 import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 
@@ -55,14 +56,23 @@ public class AuthenticationFilter implements Filter {
         } else if (checkDirecteur(username, password)) {
             // Redirigez le directeur général vers sa page spécifique
             httpResponse.sendRedirect(httpRequest.getContextPath() + "/directeur.jsp");
+            
+         // Dans votre filtre d'authentification
         } else if (checkEnseignant(username, password)) {
-            // Redirigez l'enseignant vers sa page spécifique
-            httpResponse.sendRedirect(httpRequest.getContextPath() + "/enseignant.jsp");
+                // Récupérer l'enseignant depuis la base de données
+                Enseignant enseignant = daoEnseignant.getEnseignantByUsername(username);
+                
+                // Définir l'enseignant dans la session HTTP
+                HttpSession session = httpRequest.getSession();
+                session.setAttribute("enseignant", enseignant);
+                
+                // Redirigez l'enseignant vers sa page spécifique
+                httpResponse.sendRedirect(httpRequest.getContextPath() + "/enseignant.jsp");    
         } else {
             // Informations d'identification incorrectes, redirigez vers une page d'erreur
             httpResponse.sendRedirect(httpRequest.getContextPath() + "/error.jsp");
         }
-    }
+    }    
 
     private boolean checkDirecteur(String username, String password) {
         Directeur directeur = daoDirecteur.getDirecteurByUsername(username);

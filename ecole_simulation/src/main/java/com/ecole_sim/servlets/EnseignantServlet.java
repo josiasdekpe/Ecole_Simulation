@@ -10,8 +10,10 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import com.ecole_sim.model.Creneau;
+import com.ecole_sim.model.Enseignant;
 import com.ecole_sim.model.Matiere;
 import com.ecole_sim.service.EnseignantService;
 import com.ecole_sim.util.ServiceLocator;
@@ -30,7 +32,7 @@ public class EnseignantServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
-
+        
         if ("enseigneMatiere".equals(action)) {
             enseigneMatiere(request, response);
         } else if ("updateCreneau".equals(action)) {
@@ -41,16 +43,20 @@ public class EnseignantServlet extends HttpServlet {
     }
 
     private void enseigneMatiere(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    	String enseignantUsername = request.getParameter("enseignantUsername");
         String matiereNom = request.getParameter("matiereNom");
         String dateString = request.getParameter("date");
         String plageHoraire = request.getParameter("plageHoraire");
+
+        // Récupérer la session HTTP
+        HttpSession session = request.getSession();
+        // Récupérer l'enseignant à partir de la session
+        Enseignant enseignant = (Enseignant) session.getAttribute("enseignant");
 
         // Convertir la chaîne en objet Date
         Date date = parseDate(dateString);
 
         // Appeler la méthode du service pour enseigner la matière
-        enseignantService.enseigneMatiere(enseignantUsername, matiereNom, date, plageHoraire);
+        enseignantService.enseigneMatiere(enseignant.getUsername(), matiereNom, date, plageHoraire);
 
         // Redirection vers une page de confirmation
         response.sendRedirect("confirmation.jsp");
@@ -58,6 +64,11 @@ public class EnseignantServlet extends HttpServlet {
 
     // Méthode pour modifier un créneau
     private void updateCreneau(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        // Récupérer la session HTTP
+        HttpSession session = request.getSession();
+        // Récupérer l'enseignant à partir de la session
+        Enseignant enseignant = (Enseignant) session.getAttribute("enseignant");
+        
         String dateString = request.getParameter("date");
         String plageHoraire = request.getParameter("plageHoraire");
         String matiereNom = request.getParameter("matiereNom");
@@ -68,7 +79,7 @@ public class EnseignantServlet extends HttpServlet {
         // Récupérer la matière par son nom
         Matiere matiere = enseignantService.getDaoMatiere().getMatiereByName(matiereNom);
 
-        Creneau creneau = new Creneau(date, plageHoraire, matiere); 
+        Creneau creneau = new Creneau(date, plageHoraire, matiere, enseignant); 
         creneau.setId(creneauId);
         
         enseignantService.updateCreneau(creneau);
@@ -78,11 +89,14 @@ public class EnseignantServlet extends HttpServlet {
 	}
 
     private void peutEnseignerMatiere(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    	String enseignantUsername = request.getParameter("enseignantUsername");
+        // Récupérer la session HTTP
+        HttpSession session = request.getSession();
+        // Récupérer l'enseignant à partir de la session
+        Enseignant enseignant = (Enseignant) session.getAttribute("enseignant");
         String matiereNom = request.getParameter("matiereId");
 
         // Appeler la méthode du service pour vérifier si l'enseignant peut enseigner la matière
-        enseignantService.peutenseignerMatiere(enseignantUsername, matiereNom);
+        enseignantService.peutenseignerMatiere(enseignant.getUsername(), matiereNom);
 
         // Redirection vers une page de confirmation
         response.sendRedirect("confirmation.jsp");
