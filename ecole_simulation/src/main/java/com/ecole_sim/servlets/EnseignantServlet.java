@@ -11,17 +11,20 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import com.ecole_sim.model.Creneau;
+import com.ecole_sim.model.Matiere;
 import com.ecole_sim.service.EnseignantService;
+import com.ecole_sim.util.ServiceLocator;
 
 @WebServlet("/enseignant")
 public class EnseignantServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
-    private EnseignantService enseignantService;
+    private EnseignantService enseignantService = ServiceLocator.getEnseignantService();
 
     public EnseignantServlet(EnseignantService enseignantService) {
         super();
-        this.enseignantService = enseignantService;
+        this.enseignantService =  ServiceLocator.getEnseignantService();;
     }
 
     @Override
@@ -53,15 +56,26 @@ public class EnseignantServlet extends HttpServlet {
         response.sendRedirect("confirmation.jsp");
     }
 
-    private void updateCreneau(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int creneauId = Integer.parseInt(request.getParameter("creneauId"));
+    // Méthode pour modifier un créneau
+    private void updateCreneau(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String dateString = request.getParameter("date");
+        String plageHoraire = request.getParameter("plageHoraire");
+        String matiereNom = request.getParameter("matiereNom");
+        int creneauId = Integer.parseInt(request.getParameter("creneauId"));        
+        // Convertir la chaîne en objet Date
+        Date date = parseDate(dateString);
+        
+        // Récupérer la matière par son nom
+        Matiere matiere = enseignantService.getDaoMatiere().getMatiereByName(matiereNom);
 
-        // Appeler la méthode du service pour mettre à jour le créneau
-        enseignantService.updateCreneau(creneauId);
+        Creneau creneau = new Creneau(date, plageHoraire, matiere); 
+        creneau.setId(creneauId);
+        
+        enseignantService.updateCreneau(creneau);
+        // Redirection vers la même page
+        response.sendRedirect(request.getContextPath() + "/enseignant.jsp");
 
-        // Redirection vers une page de confirmation
-        response.sendRedirect("confirmation.jsp");
-    }
+	}
 
     private void peutEnseignerMatiere(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	String enseignantUsername = request.getParameter("enseignantUsername");
@@ -76,7 +90,7 @@ public class EnseignantServlet extends HttpServlet {
 
     // Méthode pour convertir une chaîne en objet Date
     private Date parseDate(String dateString) {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
         try {
             return formatter.parse(dateString);
         } catch (ParseException e) {

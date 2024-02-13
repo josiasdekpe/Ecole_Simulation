@@ -36,24 +36,4 @@ public class DaoEnseignant {
         return new ArrayList<>(enseignantsMap.values()); // Récupération de tous les enseignants depuis la Map
     }
 
-    public List<Creneau> getCreneaux(String enseignantUsername) {
-        Enseignant enseignant = enseignantsMap.get(enseignantUsername);
-        if (enseignant != null) {
-            return enseignant.getCreneaux(); // Retourne les créneaux de l'enseignant s'il existe
-        } else {
-            return new ArrayList<>(); // Retourne une liste vide si aucun enseignant correspondant n'est trouvé
-        }
-    }
-
-    public void updateCreneau(Creneau creneau) {
-        // Dans cette méthode, vous pouvez simplement mettre à jour le créneau de l'enseignant
-        // Appel direct à la méthode updateCreneau de la classe Enseignant
-        Enseignant enseignant = enseignantsMap.get(creneau.getEnseignant().getUsername());
-        if (enseignant != null) {
-            enseignant.updateCreneau(creneau);
-        } else {
-            // Gérer le cas où aucun enseignant correspondant n'est trouvé
-        }
-    }
-
 }

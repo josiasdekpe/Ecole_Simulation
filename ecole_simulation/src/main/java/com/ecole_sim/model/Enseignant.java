@@ -7,7 +7,6 @@ public class Enseignant {
 
     private String username;
     private String password;
-    private List<Matiere> matieres = new ArrayList<>();
     private List<Creneau> creneaux = new ArrayList<>();
 
     
@@ -37,34 +36,13 @@ public class Enseignant {
         this.password = password;
     }
 
-    public List<Matiere> getMatieres() {
-        return matieres;
-    }
-
-    public void addMatiere(Matiere matiere) {
-        matieres.add(matiere);
-    }
-
     @Override
     public String toString() {
-        return "Enseignant [username=" + username + ", matieres=" + matieres + "]";
-    }
-
-    public Matiere getMatiereByName(String nomMatiere) {
-        for (Matiere m : matieres) {
-            if (m.getNom().equals(nomMatiere)) {
-                return m; 
-            }
-        }
-        return null;
-    }
-
-    public boolean peutenseignerMatiere(Matiere matiere) {
-        return matieres.contains(matiere);
+        return "Enseignant [username=" + username + "]";
     }
 
     public void addCreneau(Creneau creneau) {
-        if (!peutenseignerMatiere(creneau.getMatiere())) {
+        if (!creneau.getMatiere().isEnseignedBy(this)) {
             throw new IllegalArgumentException("L'enseignant ne peut pas enseigner cette matière");
         }
         creneaux.add(creneau);
@@ -73,18 +51,5 @@ public class Enseignant {
     public List<Creneau> getCreneaux() {
         return creneaux;
     }
-
-    public void updateCreneau(Creneau creneau) {
-        for (Creneau c : creneaux) {
-            if (c.getId() == creneau.getId()) {
-                c.setDate(creneau.getDate());
-                c.setPlageHoraire(creneau.getPlageHoraire());
-                // Mettez à jour d'autres champs du créneau si nécessaire
-                return;
-            }
-        }
-        // Si le créneau n'existe pas, ajoutez-le
-        creneaux.add(creneau);
-    }	
 	
 }

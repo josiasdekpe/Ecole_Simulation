@@ -27,15 +27,14 @@ public class EnseignantServiceImpl implements EnseignantService {
         this.daoMatiere = daoMatiere;
     }
 
-    public void updateCreneau(int creneauId) {
-    	Creneau creneau = daoCreneau.getCreneauById(creneauId);
-        daoEnseignant.updateCreneau(creneau);
+    public void updateCreneau(Creneau creneau) {
+        daoCreneau.updateCreneau(creneau);
     }
 
 	public void peutenseignerMatiere(String enseignantUsername, String matiereNom) {
         Enseignant enseignant = daoEnseignant.getEnseignantByUsername(enseignantUsername);
         Matiere matiere = daoMatiere.getMatiereByName(matiereNom);
-        enseignant.addMatiere(matiere);
+        matiere.addEnseignant(enseignant);
     }
 	
     public void enseigneMatiere(String enseignantUsername, String matiereNom, Date date, String plageHoraire) {
@@ -50,9 +49,6 @@ public class EnseignantServiceImpl implements EnseignantService {
                 // Ajouter l'enseignant à la liste des enseignants affectés à la matière
                 matiere.addEnseignant(enseignant);
             }
-            if (!enseignant.peutenseignerMatiere(matiere)) {
-                // Ajouter la matière à la liste des matières enseignées par l'enseignant 
-                enseignant.addMatiere(matiere);}
             
             Creneau creneau = new Creneau(date, plageHoraire, matiere, enseignant);
             // Ajouter le créneau à la liste des créneaux 
@@ -60,4 +56,7 @@ public class EnseignantServiceImpl implements EnseignantService {
         }
     }
 	
+	public DaoMatiere getDaoMatiere() {
+        return daoMatiere;
+    }
 }
