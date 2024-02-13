@@ -13,10 +13,8 @@
 </head>
 <body>
     <h1>Enseignant Dashboard</h1>
-        <!-- Bouton de déconnexion -->
-    <form action="login.html" method="get">
-        <input type="submit" value="Logout">
-    </form>
+   
+    <hr>
 	    <% 
      // Récupérer l'instance de AdminService à partir de la configuration de l'application
      EnseignantService enseignantService = ServiceLocator.getEnseignantService();
@@ -28,29 +26,9 @@
         
         // Récupération de l'enseignant de la session
         Enseignant enseignant = (Enseignant) session.getAttribute("enseignant");
-
-    %>
+ %>
     
-    <!-- Formulaire pour assigner des matières à l'enseignant -->
-<h2>Ajouter à mes Matières </h2>
-<form action="enseignant" method="post">
-    <input type="hidden" name="action" value="peutenseignerMatiere">
-    
-    
-    <!-- Sélection de la matière -->
-    <label for="matiere">Matières:</label><br>
-    <select id="matiere" name="matiereId">
-        <% 
-        for (Matiere matiere : enseignantService.getDaoMatiere().getMatieres()) {
-        %>
-            <option value="<%= matiere.getNom()%>"><%= matiere.getNom() %></option>
-        <% } %>
-    </select><br>
-    
-    <!-- Bouton pour soumettre le formulaire -->
-    <input type="submit" value="Ajouter à mes matières">
-</form>
-
+ 
 <!-- Tableau pour afficher le croisement Matière-Enseignant -->
 <h2>Liste de mes matières </h2>
 <table border="1">
@@ -96,43 +74,32 @@
         </tr>
     </tbody>
 </table>
-    
-    
-    <!-- Formulaire pour ajouter un créneau -->
-<h2>Ajouter un Créneau</h2>
+
+   <!-- Formulaire pour assigner des matières à l'enseignant -->
+<h2>Ajouter à mes Matières </h2>
 <form action="enseignant" method="post">
-    <input type="hidden" name="action" value="insertCreneau">
+    <input type="hidden" name="action" value="peutenseignerMatiere">
     
-    <!-- Champ pour la date -->
-    <label for="dateCreneau">Date:</label><br>
-    <input type="text" id="dateCreneau" name="date" placeholder="dd/MM/yyyy"><br>
-    
-    <!-- Sélection de la plageHoraire -->
-    <label for="plageHoraire">Plage Horaire:</label><br>
-    <select id="plageHoraire" name="plageHoraire">
-        <option value="8h-10h">8h-10h</option>
-        <option value="10h-12h">10h-12h</option>
-        <option value="15h-17h">15h-17h</option>
-        <option value="17h-19h">17h-19h</option>
-    </select><br>
     
     <!-- Sélection de la matière -->
-    <label for="matiere">Nom Matière:</label><br>
-    <select id="matiere" name="matiereNom">
+    <label for="matiere">Matières:</label><br>
+    <select id="matiere" name="matiereId">
         <% 
         for (Matiere matiere : enseignantService.getDaoMatiere().getMatieres()) {
         %>
-            <option value="<%= matiere.getNom() %>"><%= matiere.getNom() %></option>
+            <option value="<%= matiere.getNom()%>"><%= matiere.getNom() %></option>
         <% } %>
     </select><br>
     
-    
     <!-- Bouton pour soumettre le formulaire -->
-    <input type="submit" value="Ajouter Créneau">
+    <input type="submit" value="Ajouter à mes matières">
 </form>
+
+	<hr>    
     
+
     
-    <h2>Liste des Créneaux * Modifier Créneau</h2>
+    <h2>Liste de mes Créneaux * Modifier Créneau</h2>
     <table border="1">
         <thead>
             <tr>
@@ -203,7 +170,40 @@
             <% } %>
         </tbody>
     </table>
-
+    <!-- Formulaire pour ajouter un créneau -->
+<h2>Ajouter un Créneau</h2>
+<form action="enseignant" method="post">
+    <input type="hidden" name="action" value="insertCreneau">
+    
+    <!-- Champ pour la date -->
+    <label for="dateCreneau">Date:</label><br>
+    <input type="text" id="dateCreneau" name="date" placeholder="dd/MM/yyyy"><br>
+    
+    <!-- Sélection de la plageHoraire -->
+    <label for="plageHoraire">Plage Horaire:</label><br>
+    <select id="plageHoraire" name="plageHoraire">
+        <option value="8h-10h">8h-10h</option>
+        <option value="10h-12h">10h-12h</option>
+        <option value="15h-17h">15h-17h</option>
+        <option value="17h-19h">17h-19h</option>
+    </select><br>
+    
+    <!-- Sélection de la matière -->
+    <label for="matiere">Nom Matière:</label><br>
+    <select id="matiere" name="matiereNom">
+        <% 
+        for (Matiere matiere : enseignantService.getDaoMatiere().getMatieres()) {
+        %>
+            <option value="<%= matiere.getNom() %>"><%= matiere.getNom() %></option>
+        <% } %>
+    </select><br>
+    
+    
+    <!-- Bouton pour soumettre le formulaire -->
+    <input type="submit" value="Ajouter Créneau">
+</form>
+    
+	<hr>
         <h1></h1>
         <!-- Bouton de déconnexion -->
     <form action="login.html" method="get">

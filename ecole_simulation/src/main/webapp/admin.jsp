@@ -23,21 +23,9 @@
     <title>Admin Dashboard</title>
 </head>
 <body>
-    <h1>Admin Dashboard</h1>
-        <!-- Bouton de déconnexion -->
-    <form action="login.html" method="get">
-        <input type="submit" value="Logout">
-    </form>
-        <!-- Formulaire pour ajouter un directeur -->
-    <h2>Ajouter un Directeur</h2>
-    <form action="admin" method="post">
-        <input type="hidden" name="action" value="addDirecteur">
-        <label for="username">UsernameDirecteur:</label><br>
-        <input type="text" id="username" name="username"><br>
-        <label for="password">PasswordDirecteur:</label><br>
-        <input type="text" id="password" name="password"><br><br>
-        <input type="submit" value="Ajouter Directeur">
-    </form>
+	<h1>Admin Dashboard</h1>
+    <hr>
+
     <!-- Tableau pour afficher la liste des directeurs -->
     <h2>Liste des Directeurs</h2>
     <table border="1">
@@ -65,18 +53,17 @@
             <% } %>
         </tbody>
     </table>
-
-	    <!-- Formulaire pour ajouter un enseignant -->
-    <h2>Ajouter un Enseignant</h2>
+        <!-- Formulaire pour ajouter un directeur -->
+    <h2>Ajouter un Directeur</h2>
     <form action="admin" method="post">
-        <input type="hidden" name="action" value="addEnseignant">
-        <label for="username">UsernameEnseignant:</label><br>
+        <input type="hidden" name="action" value="addDirecteur">
+        <label for="username">UsernameDirecteur:</label><br>
         <input type="text" id="username" name="username"><br>
-        <label for="password">PasswordEnseignant:</label><br>
+        <label for="password">PasswordDirecteur:</label><br>
         <input type="text" id="password" name="password"><br><br>
-        <input type="submit" value="Ajouter Enseignant">
+        <input type="submit" value="Ajouter Directeur">
     </form>
-
+<hr>
     <!-- Tableau pour afficher la liste des enseignants -->
     <h2>Liste des Enseignants</h2>
     <table border="1">
@@ -103,15 +90,19 @@
             <% } %>
         </tbody>
     </table>
-	
-    <!-- Formulaire pour ajouter une matière -->
-    <h2>Ajouter une Matière</h2>
+	    <!-- Formulaire pour ajouter un enseignant -->
+    <h2>Ajouter un Enseignant</h2>
     <form action="admin" method="post">
-        <input type="hidden" name="action" value="addMatiere">
-        <label for="nomMatiere">Nom:</label><br>
-        <input type="text" id="nomMatiere" name="nom"><br><br>
-        <input type="submit" value="Ajouter Matière">
+        <input type="hidden" name="action" value="addEnseignant">
+        <label for="username">UsernameEnseignant:</label><br>
+        <input type="text" id="username" name="username"><br>
+        <label for="password">PasswordEnseignant:</label><br>
+        <input type="text" id="password" name="password"><br><br>
+        <input type="submit" value="Ajouter Enseignant">
     </form>
+    
+    
+<hr>
     <!-- Tableau pour afficher la liste des matières -->
     <h2>Liste des Matières</h2>
     <table border="1">
@@ -136,33 +127,15 @@
             <% } %>
         </tbody>
     </table>
-<!-- Formulaire pour ajouter un créneau -->
-<h2>Ajouter un Créneau</h2>
-<form action="admin" method="post">
-    <input type="hidden" name="action" value="addCreneau">
-    <label for="dateCreneau">Date:</label><br>
-    <input type="text" id="dateCreneau" name="date" placeholder="dd/MM/yyyy"><br>
-    <label for="plageHoraire">Plage Horaire:</label><br>
-    <select id="plageHoraire" name="plageHoraire">
-        <option value="8h-10h">8h-10h</option>
-        <option value="10h-12h">10h-12h</option>
-        <option value="15h-17h">15h-17h</option>
-        <option value="17h-19h">17h-19h</option>
-    </select><br>
-    <label for="nomMatiereCreneau">Nom Matière:</label><br>
-    <select id="nomMatiereCreneau" name="nomMatiere">
-        <!-- Afficher les options avec les matières actuelles -->
-        <% 
-            // Récupérer la liste des matières à partir du service
-            List<Matiere> matieres = adminService.getDaoMatiere().getMatieres();
-            for (Matiere matiere : matieres) {
-        %>
-        <option value="<%= matiere.getNom() %>"><%= matiere.getNom() %></option>
-        <% } %>
-    </select><br><br>
-    <input type="submit" value="Ajouter Créneau">
-</form>
-
+    <!-- Formulaire pour ajouter une matière -->
+    <h2>Ajouter une Matière</h2>
+    <form action="admin" method="post">
+        <input type="hidden" name="action" value="addMatiere">
+        <label for="nomMatiere">Nom:</label><br>
+        <input type="text" id="nomMatiere" name="nom"><br><br>
+        <input type="submit" value="Ajouter Matière">
+    </form>    
+<hr>    
     <!-- Tableau pour afficher la liste des créneaux -->
     <h2>Liste des Créneaux</h2>
     <table border="1">
@@ -206,8 +179,34 @@
             <% } %>
         </tbody>
     </table>
+<!-- Formulaire pour ajouter un créneau -->
+<h2>Ajouter un Créneau</h2>
+<form action="admin" method="post">
+    <input type="hidden" name="action" value="addCreneau">
+    <label for="dateCreneau">Date:</label><br>
+    <input type="text" id="dateCreneau" name="date" placeholder="dd/MM/yyyy"><br>
+    <label for="plageHoraire">Plage Horaire:</label><br>
+    <select id="plageHoraire" name="plageHoraire">
+        <option value="8h-10h">8h-10h</option>
+        <option value="10h-12h">10h-12h</option>
+        <option value="15h-17h">15h-17h</option>
+        <option value="17h-19h">17h-19h</option>
+    </select><br>
+    <label for="nomMatiereCreneau">Nom Matière:</label><br>
+    <select id="nomMatiereCreneau" name="nomMatiere">
+        <!-- Afficher les options avec les matières actuelles -->
+        <% 
+            // Récupérer la liste des matières à partir du service
+            List<Matiere> matieres = adminService.getDaoMatiere().getMatieres();
+            for (Matiere matiere : matieres) {
+        %>
+        <option value="<%= matiere.getNom() %>"><%= matiere.getNom() %></option>
+        <% } %>
+    </select><br><br>
+    <input type="submit" value="Ajouter Créneau">
+</form>
 
-
+<hr>
     <!-- Formulaire pour modifier le mot de passe de l'administrateur -->
     <h2>Modifier le Mot de Passe de l'Administrateur</h2>
 <form action="admin" method="post">
@@ -221,8 +220,11 @@
     <label for="newPassword">Nouveau Mot de Passe:</label><br>
     <input type="password" id="newPassword" name="newPassword"><br><br>
     <input type="submit" value="Modifier le Mot de Passe">
+
 </form>
-	<h1></h1>
+	
+    	<hr>
+    	<h1></h1>
     <!-- Bouton de déconnexion -->
     <form action="login.html" method="get">
         <input type="submit" value="Logout">

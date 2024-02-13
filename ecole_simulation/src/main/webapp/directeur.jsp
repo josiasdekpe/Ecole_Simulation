@@ -12,23 +12,12 @@
 </head>
 <body>
     <h1>Directeur Dashboard</h1>
-        <!-- Bouton de déconnexion -->
-    <form action="login.html" method="get">
-        <input type="submit" value="Logout">
-    </form>
-    
+        <hr>
     <% 
      // Récupérer l'instance de AdminService à partir de la configuration de l'application
      DirecteurService directeurService = ServiceLocator.getDirecteurService();
     %>
-    <!-- Formulaire pour ajouter une matière -->
-    <h2>Ajouter une Matière</h2>
-    <form action="directeur" method="post">
-        <input type="hidden" name="action" value="addMatiere">
-        <label for="nomMatiere">Nom:</label><br>
-        <input type="text" id="nomMatiere" name="nom"><br><br>
-        <input type="submit" value="Ajouter Matière">
-    </form>
+
  <!-- Tableau pour afficher la liste des matières -->
     <h2>Liste des Matières</h2>
     <table border="1">
@@ -53,18 +42,16 @@
             <% } %>
         </tbody>
     </table>
-    <!-- Formulaire pour ajouter un enseignant -->
-    <h2>Ajouter un Enseignant</h2>
+        <!-- Formulaire pour ajouter une matière -->
+    <h2>Ajouter une Matière</h2>
     <form action="directeur" method="post">
-        <input type="hidden" name="action" value="addEnseignant">
-        <label for="enseignantUsername"> UsernameEnseignant:</label><br>
-        <input type="text" id="enseignantUsername" name="enseignantUsername"><br>
-        <label for="enseignantPassword"> PasswordEnseignant:</label><br>
-        <input type="text" id="enseignantPassword" name="enseignantPassword"><br><br>
-        <input type="submit" value="Ajouter Enseignant">
+        <input type="hidden" name="action" value="addMatiere">
+        <label for="nomMatiere">Nom:</label><br>
+        <input type="text" id="nomMatiere" name="nom"><br><br>
+        <input type="submit" value="Ajouter Matière">
     </form>
 
-
+<hr>
     <!-- Tableau pour afficher la liste des enseignants -->
     <h2>Liste des Enseignants</h2>
     <table border="1">
@@ -91,38 +78,18 @@
             <% } %>
         </tbody>
     </table>
+    <!-- Formulaire pour ajouter un enseignant -->
+    <h2>Ajouter un Enseignant</h2>
+    <form action="directeur" method="post">
+        <input type="hidden" name="action" value="addEnseignant">
+        <label for="enseignantUsername"> UsernameEnseignant:</label><br>
+        <input type="text" id="enseignantUsername" name="enseignantUsername"><br>
+        <label for="enseignantPassword"> PasswordEnseignant:</label><br>
+        <input type="text" id="enseignantPassword" name="enseignantPassword"><br><br>
+        <input type="submit" value="Ajouter Enseignant">
+    </form>
     
- <!-- Formulaire pour assigner un enseignant à une matière -->
-<h2>Assigner un Enseignant à une Matière</h2>
-<form action="directeur" method="post">
-    <input type="hidden" name="action" value="assignEnseignantToMatiere">
-    
-        <!-- Sélection de la matière -->
-    <label for="matiere">Matière:</label><br>
-    <select id="matiere" name="matiereId">
-        <% 
-        for (Matiere matiere : daoMatiere.getMatieres()) {
-        %>
-            <option value="<%= matiere.getNom() %>"><%= matiere.getNom() %></option>
-        <% } %>
-    </select><br><br>
-    
-    <!-- Sélection de l'enseignant -->
-    <label for="enseignant">Enseignant:</label><br>
-    <select id="enseignant" name="enseignantUsername">
-        <% 
-        for (Enseignant enseignant : daoEnseignant.getEnseignants()) {
-        %>
-            <option value="<%= enseignant.getUsername() %>"><%= enseignant.getUsername() %></option>
-        <% } %>
-    </select><br>
-    
-    <!-- Bouton pour soumettre le formulaire -->
-    <input type="submit" value="Assigner Enseignant à Matière">
-</form>
-
-
-
+<hr>
 <!-- Tableau pour afficher le croisement Matière-Enseignant -->
 <h2>Matrice d'Assignations Matières-Enseignants</h2>
 <table border="1">
@@ -167,48 +134,37 @@
         <% } %>
     </tbody>
 </table>
-<!-- Formulaire pour ajouter un créneau -->
-<h2>Ajouter un Créneau</h2>
+
+ <!-- Formulaire pour assigner un enseignant à une matière -->
+<h2>Assigner un Enseignant à une Matière</h2>
 <form action="directeur" method="post">
-    <input type="hidden" name="action" value="insertCreneau">
+    <input type="hidden" name="action" value="assignEnseignantToMatiere">
     
-    <!-- Champ pour la date -->
-    <label for="dateCreneau">Date:</label><br>
-    <input type="text" id="dateCreneau" name="date" placeholder="dd/MM/yyyy"><br>
-    
-    <!-- Sélection de la plageHoraire -->
-    <label for="plageHoraire">Plage Horaire:</label><br>
-    <select id="plageHoraire" name="plageHoraire">
-        <option value="8h-10h">8h-10h</option>
-        <option value="10h-12h">10h-12h</option>
-        <option value="15h-17h">15h-17h</option>
-        <option value="17h-19h">17h-19h</option>
-    </select><br>
-    
-    <!-- Sélection de la matière -->
-    <label for="matiere">Nom Matière:</label><br>
-    <select id="matiere" name="matiereNom">
+        <!-- Sélection de la matière -->
+    <label for="matiere">Matière:</label><br>
+    <select id="matiere" name="matiereId">
         <% 
-        for (Matiere matiere : directeurService.getDaoMatiere().getMatieres()) {
+        for (Matiere matiere : daoMatiere.getMatieres()) {
         %>
             <option value="<%= matiere.getNom() %>"><%= matiere.getNom() %></option>
         <% } %>
-    </select><br>
+    </select><br><br>
     
     <!-- Sélection de l'enseignant -->
     <label for="enseignant">Enseignant:</label><br>
-    <select id="enseignant" name="enseignantNom">
+    <select id="enseignant" name="enseignantUsername">
         <% 
-        for (Enseignant enseignant : directeurService.getDaoEnseignant().getEnseignants()) {
+        for (Enseignant enseignant : daoEnseignant.getEnseignants()) {
         %>
             <option value="<%= enseignant.getUsername() %>"><%= enseignant.getUsername() %></option>
         <% } %>
-    </select><br><br>
+    </select><br>
     
     <!-- Bouton pour soumettre le formulaire -->
-    <input type="submit" value="Ajouter Créneau">
+    <input type="submit" value="Assigner Enseignant à Matière">
 </form>
 
+<hr>
 
 <!-- Tableau pour afficher la liste des créneaux -->
 <h2>Liste des Créneaux * Modifier Créneau </h2>
@@ -287,6 +243,52 @@
         <% } %>
     </tbody>
 </table>
+
+<!-- Formulaire pour ajouter un créneau -->
+<h2>Ajouter un Créneau</h2>
+<form action="directeur" method="post">
+    <input type="hidden" name="action" value="insertCreneau">
+    
+    <!-- Champ pour la date -->
+    <label for="dateCreneau">Date:</label><br>
+    <input type="text" id="dateCreneau" name="date" placeholder="dd/MM/yyyy"><br>
+    
+    <!-- Sélection de la plageHoraire -->
+    <label for="plageHoraire">Plage Horaire:</label><br>
+    <select id="plageHoraire" name="plageHoraire">
+        <option value="8h-10h">8h-10h</option>
+        <option value="10h-12h">10h-12h</option>
+        <option value="15h-17h">15h-17h</option>
+        <option value="17h-19h">17h-19h</option>
+    </select><br>
+    
+    <!-- Sélection de la matière -->
+    <label for="matiere">Nom Matière:</label><br>
+    <select id="matiere" name="matiereNom">
+        <% 
+        for (Matiere matiere : directeurService.getDaoMatiere().getMatieres()) {
+        %>
+            <option value="<%= matiere.getNom() %>"><%= matiere.getNom() %></option>
+        <% } %>
+    </select><br>
+    
+    <!-- Sélection de l'enseignant -->
+    <label for="enseignant">Enseignant:</label><br>
+    <select id="enseignant" name="enseignantNom">
+        <% 
+        for (Enseignant enseignant : directeurService.getDaoEnseignant().getEnseignants()) {
+        %>
+            <option value="<%= enseignant.getUsername() %>"><%= enseignant.getUsername() %></option>
+        <% } %>
+    </select><br><br>
+    
+    <!-- Bouton pour soumettre le formulaire -->
+    <input type="submit" value="Ajouter Créneau">
+</form>
+
+
+
+<hr>
     <h1></h1>
     <!-- Bouton de déconnexion -->
     <form action="login.html" method="get">
