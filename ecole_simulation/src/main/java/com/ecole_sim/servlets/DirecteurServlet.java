@@ -16,6 +16,7 @@ import com.ecole_sim.model.Enseignant;
 import com.ecole_sim.model.Matiere;
 import com.ecole_sim.service.DirecteurService;
 import com.ecole_sim.util.ServiceLocator;
+import com.ecole_sim.util.DaoLocator;
 
 @WebServlet("/directeur")
 public class DirecteurServlet extends HttpServlet {
@@ -74,8 +75,8 @@ public class DirecteurServlet extends HttpServlet {
     	String enseignantUsername = request.getParameter("enseignantUsername");
         String matiereNom = request.getParameter("matiereId");      
         // Récupération de l'enseignant et de la matière
-        Enseignant enseignant = directeurService.getDaoEnseignant().getEnseignantByUsername(enseignantUsername); 
-        Matiere matiere = directeurService.getDaoMatiere().getMatiereByName(matiereNom); 
+        Enseignant enseignant = DaoLocator.getDaoEnseignant().getEnseignantByUsername(enseignantUsername); 
+        Matiere matiere = DaoLocator.getDaoMatiere().getMatiereByName(matiereNom); 
         
         // Assignation de l'enseignant à la matière
         directeurService.assignEnseignantToMatiere(enseignant, matiere);
@@ -91,19 +92,26 @@ public class DirecteurServlet extends HttpServlet {
         String matiereNom = request.getParameter("matiereNom");  
         String enseignantNom = request.getParameter("enseignantNom");
         
+        // Récupérer la matière par son nom
+        Matiere matiere = DaoLocator.getDaoMatiere().getMatiereByName(matiereNom);
+        Enseignant enseignant = DaoLocator.getDaoEnseignant().getEnseignantByUsername(enseignantNom);
+        
+        try {
         // Convertir la chaîne en objet Date
         Date date = parseDate(dateString);
         
-        // Récupérer la matière par son nom
-        Matiere matiere = directeurService.getDaoMatiere().getMatiereByName(matiereNom);
-        Enseignant enseignant = directeurService.getDaoEnseignant().getEnseignantByUsername(enseignantNom);
+
         // Créer un créneau avec les paramètres fournis
         Creneau creneau = new Creneau(date, plageHoraire, matiere, enseignant); // null car nous n'avons pas encore les enseignants
         
         // Ajouter le créneau
         directeurService.addCreneau(creneau);
-        
         response.sendRedirect(request.getContextPath() + "/directeur.jsp");
+        
+        }catch (ParseException e) {
+            // Redirection vers une page d'erreur si la date n'a pas pu être analysée
+            response.sendRedirect(request.getContextPath() + "/error.jsp?errorType=date");
+        }
     }
     
     // Méthode pour modifier un créneau
@@ -113,13 +121,15 @@ public class DirecteurServlet extends HttpServlet {
         String matiereNom = request.getParameter("matiereNom");  
         String enseignantNom = request.getParameter("enseignantNom");
         
+        // Récupérer la matière par son nom
+        Matiere matiere = DaoLocator.getDaoMatiere().getMatiereByName(matiereNom);
+        Enseignant enseignant = DaoLocator.getDaoEnseignant().getEnseignantByUsername(enseignantNom);
+        int creneauId = Integer.parseInt(request.getParameter("creneauId"));
+        
+        try {
         // Convertir la chaîne en objet Date
         Date date = parseDate(dateString);
-        
-        // Récupérer la matière par son nom
-        Matiere matiere = directeurService.getDaoMatiere().getMatiereByName(matiereNom);
-        Enseignant enseignant = directeurService.getDaoEnseignant().getEnseignantByUsername(enseignantNom);
-        int creneauId = Integer.parseInt(request.getParameter("creneauId"));
+
         Creneau creneau = new Creneau(date, plageHoraire, matiere, enseignant); 
         creneau.setId(creneauId);
         
@@ -127,18 +137,17 @@ public class DirecteurServlet extends HttpServlet {
         // Redirection vers la même page
         response.sendRedirect(request.getContextPath() + "/directeur.jsp");
 
+        }catch (ParseException e) {
+            // Redirection vers une page d'erreur si la date n'a pas pu être analysée
+            response.sendRedirect(request.getContextPath() + "/error.jsp?errorType=date");
+        }
 	}
 
     // Méthode pour convertir une chaîne en objet Date
-    private Date parseDate(String dateString) {
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-        try {
-            return formatter.parse(dateString);
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
+    private Date parseDate(String dateString) throws ParseException {
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy");
+        return dateFormatter.parse(dateString);
+    }   
     
     
 }

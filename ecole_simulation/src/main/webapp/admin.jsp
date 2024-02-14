@@ -2,7 +2,7 @@
 <%@ page import="com.ecole_sim.service.AdminServiceImpl, com.ecole_sim.service.AdminService" %>
 <%@ page import="com.ecole_sim.model.*" %>
 <%@ page import="java.text.SimpleDateFormat, java.util.Date" %>
-<%@ page import="com.ecole_sim.util.ServiceLocator, java.util.Map, java.util.List" %>
+<%@ page import="com.ecole_sim.util.ServiceLocator, com.ecole_sim.util.DaoLocator, java.util.Map, java.util.List" %>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -41,7 +41,7 @@
             // Récupérer l'instance de AdminService à partir de la configuration de l'application
             AdminService adminService = ServiceLocator.getAdminService();
             // Récupérer la liste des directeurs à partir du service
-            DaoDirecteur daoDirecteur = adminService.getDaoDirecteur(); // Vous devez probablement implémenter un mécanisme pour récupérer cette instance
+            DaoDirecteur daoDirecteur = DaoLocator.getDaoDirecteur(); // Vous devez probablement implémenter un mécanisme pour récupérer cette instance
             int countDirecteurs = 1;
             for (Directeur directeur : daoDirecteur.getDirecteurs()) {
         %>
@@ -78,7 +78,7 @@
             <%-- Remplacer les valeurs statiques par les données réelles récupérées depuis la base de données --%>
             <% 
             // Récupérer la liste des directeurs à partir du service
-            DaoEnseignant daoEnseignant = adminService.getDaoEnseignant(); // Vous devez probablement implémenter un mécanisme pour récupérer cette instance
+            DaoEnseignant daoEnseignant = DaoLocator.getDaoEnseignant(); // Vous devez probablement implémenter un mécanisme pour récupérer cette instance
             int countEnseignants = 1;
             for (Enseignant enseignant : daoEnseignant.getEnseignants()) {
         %>
@@ -116,7 +116,7 @@
             <%-- Remplacer les valeurs statiques par les données réelles récupérées depuis la base de données --%>
             <% 
             // Récupérer la liste des directeurs à partir du service
-            DaoMatiere daoMatiere = adminService.getDaoMatiere(); // Vous devez probablement implémenter un mécanisme pour récupérer cette instance
+            DaoMatiere daoMatiere = DaoLocator.getDaoMatiere(); // Vous devez probablement implémenter un mécanisme pour récupérer cette instance
             int countMatieres = 1;
             for (Matiere matiere : daoMatiere.getMatieres()) {
         %>
@@ -145,13 +145,14 @@
                 <th>Date</th>
                 <th>Plage Horaire</th>
                 <th>Matière</th>
+                <th>Enseignant</th>
             </tr>
         </thead>
         <tbody>
             <%-- Remplacer les valeurs statiques par les données réelles récupérées depuis la base de données --%>
             <% 
             int countCreneaux = 1;
-            DaoCreneau daoCreneau = adminService.getDaoCreneau(); // Vous devez probablement implémenter un mécanisme pour récupérer cette instance
+            DaoCreneau daoCreneau = DaoLocator.getDaoCreneau(); // Vous devez probablement implémenter un mécanisme pour récupérer cette instance
             for (Creneau creneau : daoCreneau.getCreneaux()) {
                 Date dateCreneau = creneau.getDate();
                 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -175,6 +176,7 @@
                     <td><%= formattedDate %></td>
                     <td><%= creneau.getPlageHoraire() %></td>
                     <td><%= creneau.getMatiere().getNom() %></td>
+            		<td><%= creneau.getEnseignant().getUsername() %></td>                    
                 </tr>
             <% } %>
         </tbody>
@@ -197,30 +199,39 @@
         <!-- Afficher les options avec les matières actuelles -->
         <% 
             // Récupérer la liste des matières à partir du service
-            List<Matiere> matieres = adminService.getDaoMatiere().getMatieres();
+            List<Matiere> matieres = DaoLocator.getDaoMatiere().getMatieres();
             for (Matiere matiere : matieres) {
         %>
         <option value="<%= matiere.getNom() %>"><%= matiere.getNom() %></option>
         <% } %>
-    </select><br><br>
+    </select><br>
+    <!-- Sélection de l'enseignant -->
+    <label for="enseignant">Enseignant:</label><br>
+    <select id="enseignant" name="enseignantNom">
+        <% 
+        for (Enseignant enseignant : DaoLocator.getDaoEnseignant().getEnseignants()) {
+        %>
+            <option value="<%= enseignant.getUsername() %>"><%= enseignant.getUsername() %></option>
+        <% } %>
+    </select><br><br>    
     <input type="submit" value="Ajouter Créneau">
 </form>
 
 <hr>
     <!-- Formulaire pour modifier le mot de passe de l'administrateur -->
     <h2>Modifier le Mot de Passe de l'Administrateur</h2>
+    
 <form action="admin" method="post">
     <input type="hidden" name="action" value="updateAdminPassword">
     <label for="username">Nom d'utilisateur:</label><br>
     <!-- Utiliser un span pour afficher l'actuel nom d'utilisateur -->
-    <span id="username"><%= adminService.getDaoAdmin().selectAdminByUsername("admin").getUsername() %></span><br>
+    <span id="username"><%= DaoLocator.getDaoAdmin().selectAdminByUsername("admin").getUsername() %></span><br>
     <label for="currentPassword">Mot de Passe Actuel:</label><br>
     <!-- Utiliser un span pour afficher l'actuel mot de passe de l'administrateur -->
-    <span id="currentPassword"><%= adminService.getDaoAdmin().selectAdminByUsername("admin").getPassword() %></span><br><br>
+    <span id="currentPassword"><%= DaoLocator.getDaoAdmin().selectAdminByUsername("admin").getPassword() %></span><br><br>
     <label for="newPassword">Nouveau Mot de Passe:</label><br>
     <input type="password" id="newPassword" name="newPassword"><br><br>
     <input type="submit" value="Modifier le Mot de Passe">
-
 </form>
 	
     	<hr>

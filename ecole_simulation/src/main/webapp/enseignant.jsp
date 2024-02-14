@@ -2,14 +2,14 @@
     pageEncoding="UTF-8"%>
 <%@ page import="com.ecole_sim.service.EnseignantServiceImpl, com.ecole_sim.service.EnseignantService" %>
 <%@ page import="com.ecole_sim.model.*" %>
-<%@ page import="java.text.SimpleDateFormat, java.util.Date" %>
-<%@ page import="com.ecole_sim.util.ServiceLocator, java.util.Map, java.util.List" %>    
+<%@ page import="java.text.SimpleDateFormat, java.util.Date, java.util.Set, java.util.HashSet" %>
+<%@ page import="com.ecole_sim.util.ServiceLocator, com.ecole_sim.util.DaoLocator, java.util.Map, java.util.List" %>    
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enseignant Dashboard</title>
+    <title>Enseignant Dashboard:</title>
 </head>
 <body>
     <h1>Enseignant Dashboard</h1>
@@ -20,7 +20,7 @@
      EnseignantService enseignantService = ServiceLocator.getEnseignantService();
         // Si l'enseignant est null dans la session, définir l'enseignant par défaut
         if (session.getAttribute("enseignant") == null) {
-        	Enseignant defaultEnseignant = enseignantService.getDaoEnseignant().getEnseignantByUsername("enseignant");
+        	Enseignant defaultEnseignant = DaoLocator.getDaoEnseignant().getEnseignantByUsername("enseignant");
             session.setAttribute("enseignant", defaultEnseignant);
         }
         
@@ -34,7 +34,6 @@
 <table border="1">
     <thead>
         <tr>
-            <th>No</th>
             <th>Mes matières</th>
             <th>Les cours que je donne</th>
         </tr>
@@ -42,16 +41,12 @@
     <tbody>
         <%-- Afficher les matières attribuées à l'enseignant --%>
         <tr>
-            <!-- Numéro de ligne -->
-            <td>1</td>
-            <!-- Nom de l'enseignant -->
-
             <!-- Liste des matières attribuées à l'enseignant_0 -->
             <td>
                 <ul>
                     <% 
                     // Parcourir toutes les matières
-                    for (Matiere matiere : enseignantService.getDaoMatiere().getMatieres()) {
+                    for (Matiere matiere : DaoLocator.getDaoMatiere().getMatieres()) {
                         // Vérifier si la matière est attribuée à l'enseignant
                         if (matiere.isEnseignedBy(enseignant)) {
                     %>
@@ -61,15 +56,27 @@
                 </ul>
             </td>
             <td>                    
-            	<ul>
-					<% 
-                    // Parcourir toutes les matières
-                    	for ( Creneau creneau : enseignantService.getDaoCreneau().getCreneauxByEnseignant(enseignant.getUsername())){
-                    %>
-                            <li><%= creneau.getMatiere().getNom() %></li>
-                    <% 
-                    } %> 
-                   </ul>
+            <%
+    // Créer un ensemble pour stocker les matières uniques
+    Set<String> matieresEnseignees = new HashSet<>();
+    
+    // Parcourir tous les créneaux de l'enseignant
+    for (Creneau creneau : DaoLocator.getDaoCreneau().getCreneauxByEnseignant(enseignant.getUsername())) {
+        // Ajouter le nom de la matière à l'ensemble
+        matieresEnseignees.add(creneau.getMatiere().getNom());
+    }
+%>
+<ul>
+    <% 
+        // Parcourir toutes les matières uniques
+        for (String matiere : matieresEnseignees) {
+    %>
+            <li><%= matiere %></li>
+    <% 
+        } 
+    %> 
+</ul>
+
              </td>
         </tr>
     </tbody>
@@ -85,12 +92,12 @@
     <label for="matiere">Matières:</label><br>
     <select id="matiere" name="matiereId">
         <% 
-        for (Matiere matiere : enseignantService.getDaoMatiere().getMatieres()) {
+        for (Matiere matiere : DaoLocator.getDaoMatiere().getMatieres()) {
         %>
             <option value="<%= matiere.getNom()%>"><%= matiere.getNom() %></option>
         <% } %>
     </select><br>
-    
+    <br>
     <!-- Bouton pour soumettre le formulaire -->
     <input type="submit" value="Ajouter à mes matières">
 </form>
@@ -113,7 +120,7 @@
         <tbody>
             <% 
             // Obtention des créneaux de l'enseignant
-            List<Creneau> creneaux = enseignantService.getDaoCreneau().getCreneauxByEnseignant(enseignant.getUsername());
+            List<Creneau> creneaux = DaoLocator.getDaoCreneau().getCreneauxByEnseignant(enseignant.getUsername());
 
             // Parcours des créneaux
             for (Creneau creneau : creneaux) {
@@ -145,22 +152,24 @@
                         <input type="hidden" name="action" value="updateCreneau">
                         <input type="hidden" name="creneauId" value="<%= creneauId %>">
                         Nouvelle date: <input type="text" name="date" placeholder="YYYY-MM-DD" value="<%= formattedDate %>"><br>
-                        Nouvelle plage horaire: <input type="text" name="plageHoraire" value="<%= plageHoraire %>"><br>
-                        Nouvelle matière:
+                        Nouvelle plage horaire:     
+                        <select id="plageHoraire" name="plageHoraire">
+					        <option value="8h-10h">8h-10h</option>
+					        <option value="10h-12h">10h-12h</option>
+					        <option value="15h-17h">15h-17h</option>
+					        <option value="17h-19h">17h-19h</option>
+					    </select><br>
+					                        Nouvelle matière:
                         <select name="matiereNom">
                             <% 
                             // Obtention de la liste des matières
-                            List<Matiere> matieres = enseignantService.getDaoMatiere().getMatieres();
+                            List<Matiere> matieres = DaoLocator.getDaoMatiere().getMatieres();
                             for (Matiere m : matieres) {
                                 // Vérification si la matière du créneau est sélectionnée
                                 String selected = (m.getNom().equals(matiereNom)) ? "selected" : "";
                             %>
                                 <option value="<%= m.getNom() %>" <%= selected %>><%= m.getNom() %></option>
                             <% } %>
-                        </select><br>
-                        Nouvel enseignant:
-                        <select name="enseignantNom">
-                        
                         </select><br>
                         <input type="submit" value="Enregistrer">
                         <button type="button" onclick="hideEditForm('<%= creneauId %>'); document.getElementById('editButton_<%= creneauId %>').style.display='block'">Annuler</button>
@@ -192,12 +201,14 @@
     <label for="matiere">Nom Matière:</label><br>
     <select id="matiere" name="matiereNom">
         <% 
-        for (Matiere matiere : enseignantService.getDaoMatiere().getMatieres()) {
+        for (Matiere matiere : DaoLocator.getDaoMatiere().getMatieres()) {
         %>
             <option value="<%= matiere.getNom() %>"><%= matiere.getNom() %></option>
         <% } %>
-    </select><br>
+    </select>
     
+    <br>
+    <br>
     
     <!-- Bouton pour soumettre le formulaire -->
     <input type="submit" value="Ajouter Créneau">

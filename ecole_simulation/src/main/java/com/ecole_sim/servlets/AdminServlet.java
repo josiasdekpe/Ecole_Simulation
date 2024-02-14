@@ -15,6 +15,7 @@ import com.ecole_sim.model.Enseignant;
 import com.ecole_sim.model.Matiere;
 import com.ecole_sim.model.Creneau;
 import com.ecole_sim.service.AdminService;
+import com.ecole_sim.util.DaoLocator;
 import com.ecole_sim.util.ServiceLocator;
 
 @WebServlet("/admin")
@@ -40,7 +41,11 @@ public class AdminServlet extends HttpServlet {
         } else if ("addMatiere".equals(action)) {
             addMatiere(request, response);
         } else if ("addCreneau".equals(action)) {
-            addCreneau(request, response);
+            try {
+				addCreneau(request, response);
+			} catch (ServletException | IOException | ParseException e) {
+				e.printStackTrace();
+			}
         } else if ("updateAdminPassword".equals(action)) {
             updateAdminPassword(request, response);
         }
@@ -52,7 +57,6 @@ public class AdminServlet extends HttpServlet {
         Enseignant enseignant = new Enseignant(username, password);
         adminService.addEnseignant(enseignant);
         
-        // Afficher une pop-up de confirmation par exemple
         request.setAttribute("confirmationMessage", "Opération effectuée avec succès !");
         request.getRequestDispatcher("admin.jsp").forward(request, response);
 	}
@@ -64,9 +68,7 @@ public class AdminServlet extends HttpServlet {
         Directeur directeur = new Directeur(username, password);
         adminService.addDirecteur(directeur);
         
-        // Afficher une pop-up de confirmation par exemple
-        request.setAttribute("confirmationMessage", "Opération effectuée avec succès !");
-        request.getRequestDispatcher("admin.jsp").forward(request, response);
+        response.sendRedirect(request.getContextPath() + "/admin.jsp");
     }
 
     private void addMatiere(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -75,28 +77,38 @@ public class AdminServlet extends HttpServlet {
         Matiere matiere = new Matiere(nom);
         adminService.addMatiere(matiere);
         
-        // Afficher une pop-up de confirmation par exemple
-        request.setAttribute("confirmationMessage", "Opération effectuée avec succès !");
-        request.getRequestDispatcher("admin.jsp").forward(request, response);
+        response.sendRedirect(request.getContextPath() + "/admin.jsp");
     }
 
-    private void addCreneau(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void addCreneau(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ParseException {
         String dateString = request.getParameter("date");
         String plageHoraire = request.getParameter("plageHoraire");
         String nomMatiere = request.getParameter("nomMatiere");
-        
+        String enseignantUsername = request.getParameter("enseignantNom");
         // Convertir la chaîne en objet Date
-        Date date = parseDate(dateString);
         
-        // Créer un créneau avec les paramètres fournis
-        Creneau creneau = new Creneau(date, plageHoraire, new Matiere(nomMatiere), null); // null car nous n'avons pas encore les enseignants
+        Matiere matiere = DaoLocator.getDaoMatiere().getMatiereByName(nomMatiere);
         
-        // Ajouter le créneau
-        adminService.addCreneau(creneau);
+        Enseignant enseignant = DaoLocator.getDaoEnseignant().getEnseignantByUsername(enseignantUsername);        
+        // Vérifier si l'enseignant, la matière et le créneau existent
         
-        // Afficher une pop-up de confirmation par exemple
-        request.setAttribute("confirmationMessage", "Opération effectuée avec succès !");
-        request.getRequestDispatcher("admin.jsp").forward(request, response);
+        if (enseignant != null && matiere != null) {
+            // Vérifier si l'enseignant est déjà affecté à la matière
+            if (!matiere.isEnseignedBy(enseignant)) {
+                // Ajouter l'enseignant à la liste des enseignants affectés à la matière
+                matiere.addEnseignant(enseignant);
+            }
+            try {
+            	Date date = parseDate(dateString);
+                Creneau creneau = new Creneau(date, plageHoraire, matiere, enseignant);
+                // Ajouter le créneau à la liste des créneaux 
+                DaoLocator.getDaoCreneau().insertCreneau(creneau);
+                response.sendRedirect(request.getContextPath() + "/admin.jsp");
+            }catch (ParseException e) {
+                // Redirection vers une page d'erreur si la date n'a pas pu être analysée
+                response.sendRedirect(request.getContextPath() + "/error.jsp?errorType=date");
+            }
+        }
     }
 
     private void updateAdminPassword(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -104,19 +116,13 @@ public class AdminServlet extends HttpServlet {
         // Mettre à jour le mot de passe de l'administrateur par défaut
         adminService.changeAdminPassword("admin", newPassword);
         
-        // Afficher une pop-up de confirmation par exemple
-        request.setAttribute("confirmationMessage", "Opération effectuée avec succès !");
-        request.getRequestDispatcher("admin.jsp").forward(request, response);
+        response.sendRedirect(request.getContextPath() + "/admin.jsp");
     }
 
-    // Méthode pour convertir une chaîne en objet Date
-    private Date parseDate(String dateString) {
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-        try {
-            return formatter.parse(dateString);
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
+ // Méthode pour convertir une chaîne en objet Date
+    private Date parseDate(String dateString) throws ParseException {
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy");
+        return dateFormatter.parse(dateString);
+    }   
 }
+

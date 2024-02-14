@@ -2,7 +2,7 @@
 <%@ page import="com.ecole_sim.service.DirecteurServiceImpl, com.ecole_sim.service.DirecteurService" %>
 <%@ page import="com.ecole_sim.model.*" %>
 <%@ page import="java.text.SimpleDateFormat, java.util.Date" %>
-<%@ page import="com.ecole_sim.util.ServiceLocator, java.util.Map, java.util.List" %>
+<%@ page import="com.ecole_sim.util.ServiceLocator, com.ecole_sim.util.DaoLocator, java.util.Map, java.util.List" %>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -30,8 +30,7 @@
         <tbody>
             <%-- Remplacer les valeurs statiques par les données réelles récupérées depuis la base de données --%>
             <% 
-            // Récupérer la liste des directeurs à partir du service
-            DaoMatiere daoMatiere = directeurService.getDaoMatiere(); // Vous devez probablement implémenter un mécanisme pour récupérer cette instance
+            DaoMatiere daoMatiere = DaoLocator.getDaoMatiere(); // Vous devez probablement implémenter un mécanisme pour récupérer cette instance
             int countMatieres = 1;
             for (Matiere matiere : daoMatiere.getMatieres()) {
         %>
@@ -60,13 +59,14 @@
                 <th>No</th>
                 <th>Username</th>
                 <th>Password</th>
+                
             </tr>
         </thead>
         <tbody>
             <%-- Remplacer les valeurs statiques par les données réelles récupérées depuis la base de données --%>
             <% 
             // Récupérer la liste des directeurs à partir du service
-            DaoEnseignant daoEnseignant = directeurService.getDaoEnseignant(); // Vous devez probablement implémenter un mécanisme pour récupérer cette instance
+            DaoEnseignant daoEnseignant = DaoLocator.getDaoEnseignant(); // Vous devez probablement implémenter un mécanisme pour récupérer cette instance
             int countEnseignants = 1;
             for (Enseignant enseignant : daoEnseignant.getEnseignants()) {
         %>
@@ -78,6 +78,7 @@
             <% } %>
         </tbody>
     </table>
+    
     <!-- Formulaire pour ajouter un enseignant -->
     <h2>Ajouter un Enseignant</h2>
     <form action="directeur" method="post">
@@ -181,7 +182,7 @@
     </thead>
     <tbody>
         <% 
-        DaoCreneau daoCreneau = directeurService.getDaoCreneau(); 
+        DaoCreneau daoCreneau = DaoLocator.getDaoCreneau(); 
         for (Creneau creneau : daoCreneau.getCreneaux()) {
             Date dateCreneau = creneau.getDate();
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -219,7 +220,7 @@
 				    <label for="newMatiere_<%= creneau.getId() %>">Nouvelle matière:</label>
 				    <select id="newMatiere_<%= creneau.getId() %>" name="matiereNom">
 				        <% 
-				        for (Matiere matiere : directeurService.getDaoMatiere().getMatieres()) {
+				        for (Matiere matiere : DaoLocator.getDaoMatiere().getMatieres()) {
 				            String selected = (matiere.getNom().equals(creneau.getMatiere().getNom())) ? "selected" : "";
 				        %>
 				            <option value="<%= matiere.getNom() %>" <%= selected %>><%= matiere.getNom() %></option>
@@ -228,7 +229,7 @@
 				    <label for="newEnseignant_<%= creneau.getId() %>">Nouvel enseignant:</label>
 				    <select id="newEnseignant_<%= creneau.getId() %>" name="enseignantNom">
 				        <% 
-				        for (Enseignant enseignant : directeurService.getDaoEnseignant().getEnseignants()) {
+				        for (Enseignant enseignant : DaoLocator.getDaoEnseignant().getEnseignants()) {
 				            String selected = (enseignant.getUsername().equals(creneau.getEnseignant().getUsername())) ? "selected" : "";
 				        %>
 				            <option value="<%= enseignant.getUsername() %>" <%= selected %>><%= enseignant.getUsername() %></option>
@@ -266,7 +267,7 @@
     <label for="matiere">Nom Matière:</label><br>
     <select id="matiere" name="matiereNom">
         <% 
-        for (Matiere matiere : directeurService.getDaoMatiere().getMatieres()) {
+        for (Matiere matiere : DaoLocator.getDaoMatiere().getMatieres()) {
         %>
             <option value="<%= matiere.getNom() %>"><%= matiere.getNom() %></option>
         <% } %>
@@ -276,7 +277,7 @@
     <label for="enseignant">Enseignant:</label><br>
     <select id="enseignant" name="enseignantNom">
         <% 
-        for (Enseignant enseignant : directeurService.getDaoEnseignant().getEnseignants()) {
+        for (Enseignant enseignant : DaoLocator.getDaoEnseignant().getEnseignants()) {
         %>
             <option value="<%= enseignant.getUsername() %>"><%= enseignant.getUsername() %></option>
         <% } %>

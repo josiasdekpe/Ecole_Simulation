@@ -6,16 +6,18 @@ import com.ecole_sim.model.DaoEnseignant;
 import com.ecole_sim.model.DaoMatiere;
 import com.ecole_sim.model.Enseignant;
 import com.ecole_sim.model.Matiere;
+import com.ecole_sim.util.DaoLocator;
 
 public class DirecteurServiceImpl implements DirecteurService {
 
-    private DaoMatiere daoMatiere;
-    private DaoEnseignant daoEnseignant;
-    private DaoCreneau daoCreneau;
+    private DaoMatiere daoMatiere = DaoLocator.getDaoMatiere();
+    private DaoEnseignant daoEnseignant = DaoLocator.getDaoEnseignant();
+    private DaoCreneau daoCreneau = DaoLocator.getDaoCreneau();
 
     public DirecteurServiceImpl() {
-    	this(new DaoMatiere(), new DaoEnseignant(), new DaoCreneau());
+    	this(DaoLocator.getDaoMatiere(), DaoLocator.getDaoEnseignant(), DaoLocator.getDaoCreneau());
     }
+    
     public DirecteurServiceImpl(DaoMatiere daoMatiere, DaoEnseignant daoEnseignant, DaoCreneau daoCreneau) {
         this.daoMatiere = daoMatiere;
         this.daoEnseignant = daoEnseignant;
@@ -40,16 +42,6 @@ public class DirecteurServiceImpl implements DirecteurService {
     
     public void updateCreneau(Creneau creneau) {
         daoCreneau.updateCreneau(creneau);
-    }
-
-	public DaoEnseignant getDaoEnseignant() {
-        return daoEnseignant;
-    }
-	public DaoMatiere getDaoMatiere() {
-        return daoMatiere;
-    }
-	public DaoCreneau getDaoCreneau() {
-        return daoCreneau;
     }
 
 }

@@ -1,6 +1,7 @@
 package com.ecole_sim.service;
 
 import com.ecole_sim.model.Creneau;
+import com.ecole_sim.util.DaoLocator;
 import com.ecole_sim.model.DaoAdmin;
 import com.ecole_sim.model.DaoCreneau;
 import com.ecole_sim.model.DaoDirecteur;
@@ -19,7 +20,7 @@ public class AdminServiceImpl implements AdminService {
     private DaoCreneau daoCreneau;
     
     public AdminServiceImpl() {
-    	this(new DaoAdmin(), new DaoDirecteur(), new DaoEnseignant(), new DaoMatiere(), new DaoCreneau());
+    	this(DaoLocator.getDaoAdmin(), DaoLocator.getDaoDirecteur(), DaoLocator.getDaoEnseignant(), DaoLocator.getDaoMatiere(), DaoLocator.getDaoCreneau());
     }
     
     public AdminServiceImpl(DaoAdmin daoAdmin, DaoDirecteur daoDirecteur, DaoEnseignant daoEnseignant, DaoMatiere daoMatiere, DaoCreneau daoCreneau) {
@@ -47,22 +48,6 @@ public class AdminServiceImpl implements AdminService {
     	daoAdmin.updateAdminPassword(username, newPassword);
     }
 
-	public DaoDirecteur getDaoDirecteur() {
-        return daoDirecteur;
-    }
-	public DaoEnseignant getDaoEnseignant() {
-        return daoEnseignant;
-    }
-	public DaoMatiere getDaoMatiere() {
-        return daoMatiere;
-    }
-	public DaoCreneau getDaoCreneau() {
-        return daoCreneau;
-    }
-	public DaoAdmin getDaoAdmin() {
-        return daoAdmin;
-    }
-	@Override
 	public void addEnseignant(Enseignant enseignant) {
 		daoEnseignant.insertEnseignant(enseignant);
 	}

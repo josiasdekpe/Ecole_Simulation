@@ -1,11 +1,6 @@
 package com.ecole_sim.service;
 
 import com.ecole_sim.model.Creneau;
-import com.ecole_sim.model.DaoAdmin;
-import com.ecole_sim.model.DaoCreneau;
-import com.ecole_sim.model.DaoDirecteur;
-import com.ecole_sim.model.DaoEnseignant;
-import com.ecole_sim.model.DaoMatiere;
 import com.ecole_sim.model.Directeur;
 import com.ecole_sim.model.Enseignant;
 import com.ecole_sim.model.Matiere;
@@ -27,10 +22,5 @@ public interface AdminService {
     // Modifie le mot de passe de l'administrateur par défaut
     void changeAdminPassword(String username, String newPassword);
    
-    DaoAdmin getDaoAdmin();    
-    DaoDirecteur getDaoDirecteur();
-    DaoEnseignant getDaoEnseignant();
-    DaoMatiere getDaoMatiere();
-    DaoCreneau getDaoCreneau();
 }
 

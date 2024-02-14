@@ -6,6 +6,7 @@ import com.ecole_sim.service.DirecteurServiceImpl;
 import com.ecole_sim.service.EnseignantService;
 import com.ecole_sim.service.EnseignantServiceImpl;
 import com.ecole_sim.service.AdminService;
+
 public class ServiceLocator {
 
     private static final AdminService adminService = new AdminServiceImpl();

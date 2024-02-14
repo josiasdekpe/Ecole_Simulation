@@ -14,13 +14,9 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 
 import com.ecole_sim.model.Admin;
-import com.ecole_sim.model.DaoAdmin;
-import com.ecole_sim.model.DaoDirecteur;
-import com.ecole_sim.model.DaoEnseignant;
+import com.ecole_sim.util.DaoLocator;
 import com.ecole_sim.model.Directeur;
 import com.ecole_sim.model.Enseignant;
-import com.ecole_sim.service.AdminService;
-import com.ecole_sim.util.ServiceLocator;
 
 /**
  * Servlet Filter implementation class AuthenticationFilter
@@ -28,16 +24,10 @@ import com.ecole_sim.util.ServiceLocator;
 @WebFilter("/login")
 public class AuthenticationFilter implements Filter {
 
-    private AdminService adminService = ServiceLocator.getAdminService();	
-    private DaoAdmin daoAdmin;
-    private DaoDirecteur daoDirecteur;
-    private DaoEnseignant daoEnseignant;
+
+    
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        // Initialisation des ressources nécessaires, par exemple, l'accès à la base de données ou aux services
-        daoAdmin = adminService.getDaoAdmin();
-        daoDirecteur = adminService.getDaoDirecteur();
-        daoEnseignant = adminService.getDaoEnseignant();
     }
 
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
@@ -48,7 +38,7 @@ public class AuthenticationFilter implements Filter {
         String username = httpRequest.getParameter("username");
         String password = httpRequest.getParameter("password");
 
-        Admin admin = daoAdmin.selectAdminByUsername(username);
+        Admin admin = DaoLocator.getDaoAdmin().selectAdminByUsername(username);
         // Vérifiez les informations d'identification de l'utilisateur
         if (admin != null && admin.authenticate(password)) {
             // Redirigez l'administrateur vers la page d'administration
@@ -60,7 +50,7 @@ public class AuthenticationFilter implements Filter {
          // Dans votre filtre d'authentification
         } else if (checkEnseignant(username, password)) {
                 // Récupérer l'enseignant depuis la base de données
-                Enseignant enseignant = daoEnseignant.getEnseignantByUsername(username);
+                Enseignant enseignant = DaoLocator.getDaoEnseignant().getEnseignantByUsername(username);
                 
                 // Définir l'enseignant dans la session HTTP
                 HttpSession session = httpRequest.getSession();
@@ -75,12 +65,12 @@ public class AuthenticationFilter implements Filter {
     }    
 
     private boolean checkDirecteur(String username, String password) {
-        Directeur directeur = daoDirecteur.getDirecteurByUsername(username);
+        Directeur directeur = DaoLocator.getDaoDirecteur().getDirecteurByUsername(username);
         return directeur != null && directeur.authenticate(password);
     }
 
     private boolean checkEnseignant(String username, String password) {
-        Enseignant enseignant = daoEnseignant.getEnseignantByUsername(username);
+        Enseignant enseignant = DaoLocator.getDaoEnseignant().getEnseignantByUsername(username);
         return enseignant != null && enseignant.authenticate(password);
     }
 

@@ -2,7 +2,7 @@ package com.ecole_sim.service;
 
 import java.util.Date;
 
-
+import com.ecole_sim.util.DaoLocator;
 import com.ecole_sim.model.DaoCreneau;
 import com.ecole_sim.model.DaoEnseignant;
 import com.ecole_sim.model.DaoMatiere;
@@ -18,7 +18,7 @@ public class EnseignantServiceImpl implements EnseignantService {
     
     
     public EnseignantServiceImpl() {
-    	this(new DaoEnseignant(),new DaoCreneau(),new DaoMatiere());
+    	this(DaoLocator.getDaoEnseignant(),DaoLocator.getDaoCreneau(), DaoLocator.getDaoMatiere());
     }
     
     public EnseignantServiceImpl(DaoEnseignant daoEnseignant, DaoCreneau daoCreneau, DaoMatiere daoMatiere) {
@@ -44,11 +44,6 @@ public class EnseignantServiceImpl implements EnseignantService {
         
         // Vérifier si l'enseignant, la matière et le créneau existent
         if (enseignant != null && matiere != null) {
-            // Vérifier si l'enseignant est déjà affecté à la matière
-            if (!matiere.isEnseignedBy(enseignant)) {
-                // Ajouter l'enseignant à la liste des enseignants affectés à la matière
-                matiere.addEnseignant(enseignant);
-            }
             
             Creneau creneau = new Creneau(date, plageHoraire, matiere, enseignant);
             // Ajouter le créneau à la liste des créneaux 
@@ -56,13 +51,4 @@ public class EnseignantServiceImpl implements EnseignantService {
         }
     }
 	
-	public DaoMatiere getDaoMatiere() {
-        return daoMatiere;
-    }
-	public DaoEnseignant getDaoEnseignant() {
-        return daoEnseignant;
-    }
-	public DaoCreneau getDaoCreneau() {
-		return daoCreneau;
-	}
 }
