@@ -57,8 +57,7 @@ public class AdminServlet extends HttpServlet {
         Enseignant enseignant = new Enseignant(username, password);
         adminService.addEnseignant(enseignant);
         
-        request.setAttribute("confirmationMessage", "Opération effectuée avec succès !");
-        request.getRequestDispatcher("admin.jsp").forward(request, response);
+        response.sendRedirect(request.getContextPath() + "/admin.jsp");        
 	}
 
 	private void addDirecteur(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -94,10 +93,7 @@ public class AdminServlet extends HttpServlet {
         
         if (enseignant != null && matiere != null) {
             // Vérifier si l'enseignant est déjà affecté à la matière
-            if (!matiere.isEnseignedBy(enseignant)) {
-                // Ajouter l'enseignant à la liste des enseignants affectés à la matière
-                matiere.addEnseignant(enseignant);
-            }
+
             try {
             	Date date = parseDate(dateString);
                 Creneau creneau = new Creneau(date, plageHoraire, matiere, enseignant);
@@ -115,8 +111,9 @@ public class AdminServlet extends HttpServlet {
         String newPassword = request.getParameter("newPassword");
         // Mettre à jour le mot de passe de l'administrateur par défaut
         adminService.changeAdminPassword("admin", newPassword);
-        
-        response.sendRedirect(request.getContextPath() + "/admin.jsp");
+
+        request.setAttribute("confirmationMessage", "Mot de passe admin changé avec succès !");
+        request.getRequestDispatcher("admin.jsp").forward(request, response);
     }
 
  // Méthode pour convertir une chaîne en objet Date

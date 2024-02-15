@@ -159,7 +159,7 @@
         %>
             <option value="<%= enseignant.getUsername() %>"><%= enseignant.getUsername() %></option>
         <% } %>
-    </select><br>
+    </select><br><br>
     
     <!-- Bouton pour soumettre le formulaire -->
     <input type="submit" value="Assigner Enseignant à Matière">
