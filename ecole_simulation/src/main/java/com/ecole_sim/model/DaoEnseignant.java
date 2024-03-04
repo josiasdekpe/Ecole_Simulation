@@ -25,7 +25,7 @@ public class DaoEnseignant {
     }
 
     public void deleteEnseignant(String username) {
-        enseignantsMap.remove(username); // Suppression de l'enseignant de la Map par son ID
+        enseignantsMap.remove(username); // Suppression de l'enseignant de la Map par son username
     }
 
     public Enseignant getEnseignantByUsername(String username) {

@@ -25,7 +25,7 @@ public class DaoDirecteur {
     }
 
     public void deleteDirecteur(String username) {
-        directeursMap.remove(username); // Suppression du directeur de la Map par son ID
+        directeursMap.remove(username); // Suppression du directeur de la Map par son username
     }
 
     public Directeur getDirecteurByUsername(String username) {

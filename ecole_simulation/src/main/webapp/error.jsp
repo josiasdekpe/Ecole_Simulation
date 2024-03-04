@@ -29,7 +29,15 @@
             <% } else { %>
                 <p>Impossible de déterminer la page précédente.</p>
             <% } %>
- 
+        <% } else if(errorType != null && errorType.equals("matiereNotFound")) { 
+            String previousPage = request.getHeader("Referer");
+    %>
+            <p>Erreur : Aucune matiere sélectionnée.</p>
+            <% if (previousPage != null) { %>
+                <p>Veuillez revenir à la <a href="<%= previousPage %>">page précédente</a></p>
+            <% } else { %>
+                <p>Impossible de déterminer la page précédente.</p>
+            <% } %> 
         <% } else { %>
         <p>Une erreur s'est produite lors du traitement de votre demande.<br>
             <p>Veuillez revenir à la <a href="login.html">page de connexion</a> et réessayer.</p> <p></p>

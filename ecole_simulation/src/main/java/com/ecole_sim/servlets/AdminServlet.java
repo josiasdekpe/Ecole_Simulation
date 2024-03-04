@@ -34,18 +34,31 @@ public class AdminServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
         
+        
         if ("addDirecteur".equals(action)) {
             addDirecteur(request, response);
+        } else if ("deleteDirecteur".equals(action)) {
+            deleteDirecteur(request, response);          
         } else if ("addEnseignant".equals(action)) {
             addEnseignant(request, response);
+        } else if ("deleteEnseignant".equals(action)) {
+            deleteEnseignant(request, response);              
         } else if ("addMatiere".equals(action)) {
             addMatiere(request, response);
+        } else if ("deleteMatiere".equals(action)) {
+            deleteMatiere(request, response);            
         } else if ("addCreneau".equals(action)) {
             try {
 				addCreneau(request, response);
 			} catch (ServletException | IOException | ParseException e) {
 				e.printStackTrace();
 			}
+        } else if ("deleteCreneau".equals(action)) {
+            try {
+				deleteCreneau(request, response);
+			} catch (ServletException | IOException e) {
+				e.printStackTrace();
+			}            
         } else if ("updateAdminPassword".equals(action)) {
             updateAdminPassword(request, response);
         }
@@ -116,6 +129,34 @@ public class AdminServlet extends HttpServlet {
         request.getRequestDispatcher("admin.jsp").forward(request, response);
     }
 
+    
+    private void deleteEnseignant(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String username = request.getParameter("username");
+        DaoLocator.getDaoEnseignant().deleteEnseignant(username);
+        
+        response.sendRedirect(request.getContextPath() + "/admin.jsp");        
+	}
+    private void deleteDirecteur(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String username = request.getParameter("username");
+        DaoLocator.getDaoDirecteur().deleteDirecteur(username);
+        
+        response.sendRedirect(request.getContextPath() + "/admin.jsp");        
+	}    
+    private void deleteMatiere(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String name = request.getParameter("name");
+        DaoLocator.getDaoMatiere().deleteMatiere(name);
+        
+        response.sendRedirect(request.getContextPath() + "/admin.jsp");        
+	} 
+    
+    private void deleteCreneau(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    	int id = Integer.parseInt(request.getParameter("creneauId"));
+        DaoLocator.getDaoCreneau().deleteCreneau(id);
+        
+        response.sendRedirect(request.getContextPath() + "/admin.jsp");        
+	} 
+
+    
  // Méthode pour convertir une chaîne en objet Date
     private Date parseDate(String dateString) throws ParseException {
         SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy");

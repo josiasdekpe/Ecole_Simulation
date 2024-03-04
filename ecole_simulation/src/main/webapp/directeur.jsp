@@ -291,6 +291,35 @@
 
 <hr>
     <h1></h1>
+<h2>Supprimer </h2>    
+<form action="directeur" method="post">
+    <input type="hidden" name="action" value="deleteEnseignant">
+    <label for="username">Nom d'utilisateur de l'enseignant à supprimer :</label>
+    <input type="text" id="username" name="username" required>
+    <button type="submit">Supprimer Enseignant</button>
+</form>
+
+
+<form action="directeur" method="post">
+    <input type="hidden" name="action" value="deleteMatiere">
+    <label for="name">Nom de la matière à supprimer :</label>
+    <input type="text" id="name" name="name" required>
+    <button type="submit">Supprimer Matière</button>
+</form>
+
+<form action="directeur" method="post">
+    <input type="hidden" name="action" value="deleteCreneau">
+    <label for="creneauId">Id du créneau à supprimer :</label>
+    <input type="number" id="creneauId" name="creneauId" required>
+    <button type="submit">Supprimer Créneau</button>
+</form>
+    
+    
+<hr>
+    <h1></h1>    
+ 
+    
+    
     <!-- Bouton de déconnexion -->
     <form action="login.html" method="get">
         <input type="submit" value="Logout">

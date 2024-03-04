@@ -25,7 +25,7 @@ public class DaoMatiere {
     }
 
     public void deleteMatiere(String name) {
-        matieresMap.remove(name); // Suppression de la matière de la Map par son ID
+        matieresMap.remove(name); // Suppression de la matière de la Map par son name
     }
 
     public Matiere getMatiereByName(String name) {

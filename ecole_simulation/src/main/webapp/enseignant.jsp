@@ -216,6 +216,33 @@
     
 	<hr>
         <h1></h1>
+       <h2>Démissionner/Supprimer</h2> 
+	<form action="enseignant" method="post">
+	    <input type="hidden" name="action" value="demissionMatiere">
+	    <label for="matiereNom">Nom de la matière à démissionner :</label>
+	    <select id="matiereNom" name="matiereNom">
+	        <% 
+	        for (Matiere matiere : DaoLocator.getDaoMatiere().getMatieres()) {
+	        	
+                if (matiere.isEnseignedBy(enseignant)) {
+            %>
+	            <option value="<%= matiere.getNom() %>"><%= matiere.getNom() %></option>
+	        <% }} %>
+	    </select>
+	    <button type="submit">Démissionner de la Matière</button>
+	</form>
+
+    <form action="enseignant" method="post">
+    <input type="hidden" name="action" value="deleteCreneau">
+    <label for="creneauId">Id du créneau à supprimer :</label>
+    <input type="number" id="creneauId" name="creneauId" required>
+    <button type="submit">Supprimer Créneau</button>
+	</form>
+        
+        	<hr>
+        <h1></h1>   
+        
+           
         <!-- Bouton de déconnexion -->
     <form action="login.html" method="get">
         <input type="submit" value="Logout">

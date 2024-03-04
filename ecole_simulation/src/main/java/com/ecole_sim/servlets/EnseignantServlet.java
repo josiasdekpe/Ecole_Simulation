@@ -38,8 +38,12 @@ public class EnseignantServlet extends HttpServlet {
             enseigneMatiere(request, response);
         } else if ("updateCreneau".equals(action)) {
             updateCreneau(request, response);
+        } else if ("deleteCreneau".equals(action)) {
+            deleteCreneau(request, response);            
         } else if ("peutenseignerMatiere".equals(action)) {
             peutEnseignerMatiere(request, response);
+        } else if ("demissionMatiere".equals(action)) {
+        	demissionMatiere(request, response);            
         }
     }
 
@@ -109,7 +113,32 @@ public class EnseignantServlet extends HttpServlet {
 
         response.sendRedirect(request.getContextPath() + "/enseignant.jsp");
     }
+    
+    private void demissionMatiere(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    	String name = request.getParameter("matiereNom");
+        Matiere matiere = DaoLocator.getDaoMatiere().getMatiereByName(name);
+        HttpSession session = request.getSession();
+        Enseignant enseignant = (Enseignant) session.getAttribute("enseignant");
 
+        if (matiere != null) {
+            // Si la matière existe, alors on peut la retirer de l'enseignant
+            matiere.removeEnseignant(enseignant);
+            response.sendRedirect(request.getContextPath() + "/enseignant.jsp");
+        } else {
+            // Gérer le cas où la matière n'existe pas
+            response.sendRedirect(request.getContextPath() + "/error.jsp?errorType=matiereNotFound");
+            return;
+        }                     
+	}         
+   
+    private void deleteCreneau(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    	int id = Integer.parseInt(request.getParameter("creneauId"));
+        DaoLocator.getDaoCreneau().deleteCreneau(id);
+        
+        response.sendRedirect(request.getContextPath() + "/enseignant.jsp");        
+	}  
+
+    
     // Méthode pour convertir une chaîne en objet Date
     private Date parseDate(String dateString) throws ParseException {
         SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy");

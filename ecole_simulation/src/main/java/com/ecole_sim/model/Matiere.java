@@ -40,4 +40,9 @@ public class Matiere {
         return "Matiere [nom=" + nom + "]";
     }
 
+	public void removeEnseignant(Enseignant enseignant) {
+		// TODO Auto-generated method stub
+		enseignants.remove(enseignant);
+	}
+
 }
